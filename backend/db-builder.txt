@@ -1,0 +1,72 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+
+CREATE TABLE Users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    GUID TEXT,
+    userName TEXT);
+
+INSERT INTO "Users" VALUES(null, 'FoodBot','FoodBot');
+INSERT INTO "Users" VALUES(null, 'testuser','Mike');
+
+/* external messages */
+
+CREATE TABLE Messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    State INTEGER,
+    Src TEXT, Dst TEXT,
+    Time INTEGER,
+    MessageData INTEGER);
+
+CREATE TABLE MessageData (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    Message TEXT,
+    Parsed TEXT);
+
+CREATE TABLE MessageJSON (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    State INTEGER,
+    Src TEXT, Dst TEXT,
+    Time INTEGER,
+    MessageData INTEGER);
+
+
+/* consumer/supplier support */
+
+CREATE TABLE Consumer (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    GUID TEXT,
+    Time INTEGER);
+
+CREATE TABLE Supplier (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    GUID TEXT,
+    Time INTEGER);
+
+CREATE TABLE ConsumerListingData (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    Time INTEGER,
+    OwnerID INTEGER,
+    Status INTEGER,
+    StartTime INTEGER, EndTime INTEGER,
+    Quantity DOUBLE,
+    Units TEXT,
+    ItemData INTEGER);
+
+CREATE TABLE SupplierListingData (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    Time INTEGER,
+    OwnerID INTEGER,
+    Status INTEGER,
+    StartTime INTEGER, EndTime INTEGER,
+    Quantity TEXT,
+    Units TEXT,
+    ItemData INTEGER);
+
+CREATE TABLE ItemData (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    Item TEXT);
+
+COMMIT;
+
+

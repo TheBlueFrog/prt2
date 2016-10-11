@@ -1,0 +1,53 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+
+CREATE TABLE Users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    GUID TEXT,
+    userName TEXT);
+
+INSERT INTO "Users" VALUES(null, 'FoodBot','FoodBot');
+INSERT INTO "Users" VALUES(null, 'testuser','Mike');
+
+CREATE TABLE Messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    State INTEGER,
+    Src TEXT, Dst TEXT,
+    Time INTEGER,
+    MessageData INTEGER);
+
+CREATE TABLE MessageData (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    Message TEXT,
+    Parsed TEXT);
+
+CREATE TABLE MessageJSON (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    State INTEGER,
+    Src TEXT, Dst TEXT,
+    Time INTEGER,
+    MessageData INTEGER);
+
+CREATE TABLE Consumer (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    GUID TEXT,
+    Time INTEGER,
+    StartTime INTEGER, EndTime INTEGER,
+    ItemData INTEGER);
+
+CREATE TABLE ItemData (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    Item TEXT,
+    Quantity TEXT,
+    Units TEXT);
+
+CREATE TABLE Supplier (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    GUID TEXT,
+    Time INTEGER,
+    StartTime INTEGER, EndTime INTEGER,
+    ItemData INTEGER);
+
+COMMIT;
+
+
