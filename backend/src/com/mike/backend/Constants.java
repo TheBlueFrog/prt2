@@ -15,4 +15,5 @@ public class Constants {
 
     public static String DBfname = "prt2.db";
 
+    public static double MetersPerMile = 1609.34;
 }

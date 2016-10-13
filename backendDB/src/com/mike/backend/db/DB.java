@@ -153,7 +153,7 @@ public class DB extends AbstractDB {
             Log.e(TAG, "updateMessage info param is ignored, State assumed");
 
         try {
-            String table = m.isJSON() ? "MessageJSON" : "Messages";
+            String table = "";//m.isJSON() ? "MessageJSON" : "Messages";
             String q = null;
 
             if (info.contains("State"))
@@ -344,6 +344,20 @@ public class DB extends AbstractDB {
         }
     }
 
+    public void getPhysicalPoints(constructfromDB1 cb) throws SQLException {
+        PreparedStatement s = null;
+        try {
+            String q = String.format("select * from %s", "PhysicalPoints");
+            s = mDB.prepareStatement(q);
+            ResultSet rs = s.executeQuery();
+
+            while (rs.next())
+                cb.construct(rs);
+            commit();
+        } finally {
+            cleanup(s);
+        }
+    }
 
     private long findOrInsertItem(String text) throws SQLException {
         long rowid = getItemDataID(text);

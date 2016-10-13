@@ -55,4 +55,14 @@ public class Main
 		return animation;
 	}
 
+
+	// convert map coords (Lat, Lon) into screen display coords
+
+	public static double deg2PixelX(double x) {
+		return 0;
+	}
+
+	public static double deg2PixelY(double y) {
+		return 0;
+	}
 }

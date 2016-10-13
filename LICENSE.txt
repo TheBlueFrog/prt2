@@ -1,0 +1,18 @@
+/*************************************************************************
+ *
+ * CONFIDENTIAL
+ * __________________
+ *
+ *  [2015] - [20017] Michael D. Collins
+ *  All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Michael D. Collins and his suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Michael D. Collins and may be covered
+ * by U.S. and Foreign Patents or patents in process,
+ * and are protected by trade secret or copyright law.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Michael D. Collins.
+ */

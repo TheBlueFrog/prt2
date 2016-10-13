@@ -6,16 +6,17 @@ import java.util.Random;
 
 /**
  * Created by mike on 6/17/2016.
- * we assume a flat rectangular coodinate system, e.g. not
- * factoring in spherical earth
- *
- * we do work in Lat/Lon however
  */
 public class Location {
     public double x;
     public double y;
 
     // setup map where the objects are located
+
+    // everyone assumes the map coords are Cartesian, even
+    // though we are doing it in Lat/Lon, e.g. we are working
+    // at scales where earth curvature doesn't matter
+
 
     // lat lon of map upper left
     static public double MapLeft = -123.36;
@@ -164,7 +165,7 @@ public class Location {
     }
 
     /**
-     * @param radiusM   radius of a circle with 1 std dev of locations
+     * @param radiusM   radius of a circle with 1 std dev of locations in it
      * @return          random location
      */
     public static Location getRandomLoc(double radiusM, Random random) {

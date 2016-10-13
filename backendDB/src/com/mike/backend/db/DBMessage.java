@@ -6,9 +6,6 @@ package com.mike.backend.db;
  */
 
 import com.mike.util.MyException;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +28,7 @@ public class DBMessage {
     private long dataID;
     private String message = null;
     private String parsed = null;
-    private JSONObject json = null;
+//    private JSONObject json = null;
 
     // Messages & MessageData
     public DBMessage(ResultSet rs, ResultSet rs1) throws SQLException {
@@ -52,12 +49,12 @@ public class DBMessage {
         src = rs.getString(3);
         dst = rs.getString(4);
         time = rs.getLong(5);
-        try {
-            JSONParser jp = new JSONParser();
-            json = (JSONObject) jp.parse(rs.getString(6));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            JSONParser jp = new JSONParser();
+//            json = (JSONObject) jp.parse(rs.getString(6));
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public long getDataID() {
@@ -112,11 +109,11 @@ public class DBMessage {
     }
 
 
-    public JSONObject getJSON() {
-        return json;
-    }
+//    public JSONObject getJSON() {
+//        return json;
+//    }
 
-    public boolean isJSON() {
-        return json != null;
-    }
+//    public boolean isJSON() {
+//        return json != null;
+//    }
 }
