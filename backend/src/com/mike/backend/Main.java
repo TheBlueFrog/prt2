@@ -48,7 +48,7 @@ public class Main
 	static
 	{
 		mAgents.add(new AgentInfo(MyClock.class, 1));
-		mAgents.add(new AgentInfo(NetworkLoader.class, 1));
+		mAgents.add(new AgentInfo(WorldLoader.class, 1));
 	};
 
 	public static boolean isAnimation() {

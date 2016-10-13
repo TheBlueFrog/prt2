@@ -12,21 +12,18 @@ public class RootNode extends Node {
 
     private static final String TAG = RootNode.class.getSimpleName();
 
-    public RootNode(String tag) {
+    public RootNode() {
+        super(null, 0);
     }
 
     @Override
-    public String dump() {
-        return String.format("%s", TAG);
+    public String getTag() {
+        return "Root";
     }
 
-//    public UserNode findOrAddUser(String guid) {
-//        for (UserNode u : nodes)
-//            if (u.getGuid().equals(guid))
-//                return u;
-//
-//        UserNode u = new UserNode(guid);
-//        nodes.add(u);
-//        return u;
-//    }
+    @Override
+    public String toString() {
+        return String.format("{%s}", TAG);
+    }
+
 }

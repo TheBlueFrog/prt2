@@ -1,15 +1,15 @@
 package com.mike.backend.model;
 
+import com.mike.backend.db.Node;
+
 /**
  Created by mike on 10/12/2016.
  */
-abstract public class PhysicalObject {
+abstract public class PhysicalObject extends Node {
 
-    abstract String getTag();
+    public abstract String getTag();
 
-    protected long id;
-
-    public PhysicalObject(long id) {
-        this.id = id;
+    public PhysicalObject(Node parent, long id) {
+        super(parent, id);
     }
 }

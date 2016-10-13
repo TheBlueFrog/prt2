@@ -8,38 +8,34 @@ package com.mike.backend.agents;
 import com.mike.agents.Agent;
 import com.mike.agents.Framework;
 import com.mike.agents.Message;
-import com.mike.backend.db.AbstractMessageNode;
 import com.mike.backend.db.DB;
 import com.mike.backend.db.RootNode;
 import com.mike.backend.model.PhysicalPoint;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by mike on 6/12/2016.
  *
- * suck up the messages from the db and build a network of the parsed
- * output
- *
- * eventually this has to move into the db since it'll get too big
- * to have in memory...
+ * suck up the world from the db
  */
-public class NetworkLoader extends Agent {
-    private static final String TAG = NetworkLoader.class.getSimpleName();
+public class WorldLoader extends Agent {
+    private static final String TAG = WorldLoader.class.getSimpleName();
 
-    private RootNode users; // root node
-    private List<AbstractMessageNode> backlog = new ArrayList<>();
+    private RootNode root; // root node
 
     @Override
     protected String getClassName() {
         return TAG;
     }
 
-    public NetworkLoader(Framework f, Integer sn) {
+    public WorldLoader(Framework f, Integer sn) {
         super (f, sn);
+
+        assert sn == 0;
+
+        root = new RootNode();
 
         // load the world from the DB
         // block the Framework from starting everything running until
@@ -55,7 +51,7 @@ public class NetworkLoader extends Agent {
             DB.getDB().getPhysicalPoints (new DB.constructfromDB1() {
                 @Override
                 public void construct(ResultSet rs) throws SQLException {
-                    new PhysicalPoint(rs);
+                    new PhysicalPoint(root, rs);
                 }
             });
 //            for (DBMessage m : v)
@@ -78,16 +74,11 @@ public class NetworkLoader extends Agent {
     protected void onMessage(Message msg) {
 
         if ((msg.mSender == null) && (((Framework.State) msg.mMessage)).equals(Framework.State.AgentsRunning)) {
-            // feed the analyzers all history now that the messages are all available
 
 //            for (AbstractMessageNode m : backlog)
 //                send(new Message(this, MessageNodeAgent.class, 0, m));
-
-            backlog.clear();
-            return;
         }
-
-//        if (msg.mMessage instanceof DBMessage)
+//        else if (msg.mMessage instanceof DBMessage)
 //            try {
 //                addToNetwork(((DBMessage) msg.mMessage));
 //            } catch (SQLException e) {

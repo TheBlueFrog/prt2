@@ -13,25 +13,24 @@ import java.util.List;
  */
 abstract public class Node {
 
-    protected List<Arc> incoming = new ArrayList<>();
-    protected List<Arc> outgoing = new ArrayList<>();
+    protected long id;
+    protected Node parent = null;
+    protected List<Node> children = new ArrayList<>();
 
-    public void addIncoming(Arc arc) {
-        incoming.add(arc);
+    protected Node (Node parent, long id) {
+        this.id = id;
+        this.parent = parent;
+        this.parent.children.add(this);
     }
 
-    public void addOutgoing(Arc arc) {
-        outgoing.add(arc);
+    public long getID() { return id; }
+    public Node getParent() {
+        return parent;
+    }
+    public List<Node> getChildren() {
+        return children;
     }
 
-    public List<Arc> getIncoming() {
-        return incoming;
-    }
-
-    public List<Arc> getOutgoing() {
-        return outgoing;
-    }
-
-
-    abstract public String dump();
+    abstract public String getTag();        // logging TAG, class name...
+    abstract public String toString();
 }
