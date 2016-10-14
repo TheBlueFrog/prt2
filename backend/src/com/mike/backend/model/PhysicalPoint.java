@@ -21,6 +21,7 @@ public class PhysicalPoint extends Node {
     static public String TAG = PhysicalPoint.class.getSimpleName();
 
     static private Map<Long, PhysicalPoint> knownPoints = new HashMap<>();
+    private Object x;
 
     static public Map<Long, PhysicalPoint> getKnownPoints() {
         return knownPoints;
@@ -73,5 +74,12 @@ public class PhysicalPoint extends Node {
             g2.setColor(c);
             g2.draw(circle);
         }
+    }
+
+    public double getX() {
+        return location.x;
+    }
+    public double getY() {
+        return location.y;
     }
 }

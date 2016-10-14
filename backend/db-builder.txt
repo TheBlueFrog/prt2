@@ -10,10 +10,12 @@ CREATE TABLE PhysicalPoints (
     X DOUBLE,
     Y DOUBLE
     );
-INSERT INTO "PhysicalPoints" VALUES(null,   0,   0);
-INSERT INTO "PhysicalPoints" VALUES(null, 300,   0);
-INSERT INTO "PhysicalPoints" VALUES(null, 300, 300);
-INSERT INTO "PhysicalPoints" VALUES(null,   0, 300);
+INSERT INTO "PhysicalPoints" VALUES(null,    0,    0);
+INSERT INTO "PhysicalPoints" VALUES(null,  300,    0);
+INSERT INTO "PhysicalPoints" VALUES(null,  300,  300);
+INSERT INTO "PhysicalPoints" VALUES(null,    0,  300);
+INSERT INTO "PhysicalPoints" VALUES(null, -300,  600);
+INSERT INTO "PhysicalPoints" VALUES(null,  600, 1200);
 
 
 CREATE TABLE Guides (
@@ -24,17 +26,17 @@ CREATE TABLE Guides (
 INSERT INTO "Guides" VALUES(null,  1, 2);
 INSERT INTO "Guides" VALUES(null,  2, 3);
 INSERT INTO "Guides" VALUES(null,  3, 4);
+INSERT INTO "Guides" VALUES(null,  4, 5);
+INSERT INTO "Guides" VALUES(null,  5, 6);
 
-/*
 CREATE TABLE Vehicles (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     Guide INTEGER,
     GuideDistance DOUBLE,
-    Heading DOUBLE,
     Velocity DOUBLE,
     Length DOUBLE
     );
-*/
+INSERT INTO "Vehicles" VALUES(null,  1, 0.0, 1.0, 1.0);
 
 
 

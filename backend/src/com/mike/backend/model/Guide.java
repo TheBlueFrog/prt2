@@ -82,4 +82,12 @@ public class Guide extends PhysicalObject {
             g2.draw(s);
         }
     }
+
+    public PhysicalPoint getTo() {
+        return to;
+    }
+
+    public PhysicalPoint getFrom() {
+        return from;
+    }
 }

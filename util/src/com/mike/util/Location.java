@@ -70,6 +70,10 @@ public class Location {
         this.y = location.y;
     }
 
+    public String toString () {
+        return String.format("{%s: %.1f, %.1f}", "Location", x, y);
+    }
+
     /**
      * @param location
      * @return distance, in meters, between this location and another location

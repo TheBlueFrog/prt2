@@ -275,6 +275,10 @@ public class DB extends AbstractDB {
         String q = String.format("select * from %s", "Guides");
         getObjects(cb, q);
     }
+    public void getVehicles(constructfromDB1 cb) throws SQLException {
+        String q = String.format("select * from %s", "Vehicles");
+        getObjects(cb, q);
+    }
 
     private void getObjects (constructfromDB1 cb, String q) throws SQLException {
         PreparedStatement s = null;

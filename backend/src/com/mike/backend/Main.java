@@ -21,6 +21,7 @@ import com.mike.backend.db.DB;
 import com.mike.backend.db.RootNode;
 import com.mike.backend.model.Guide;
 import com.mike.backend.model.PhysicalPoint;
+import com.mike.backend.model.Vehicle;
 
 import java.awt.*;
 import java.sql.SQLException;
@@ -86,6 +87,7 @@ public class Main
 //        Log.d(TAG, "in paint");
 		PhysicalPoint.paint(g2);
 		Guide.paint(g2);
+		Vehicle.paint(g2);
 
 //		mFramework.walk(new Framework.agentWalker() {
 //			@Override

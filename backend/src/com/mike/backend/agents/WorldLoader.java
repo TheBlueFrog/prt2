@@ -13,6 +13,7 @@ import com.mike.backend.db.DB;
 import com.mike.backend.db.RootNode;
 import com.mike.backend.model.Guide;
 import com.mike.backend.model.PhysicalPoint;
+import com.mike.backend.model.Vehicle;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,6 +48,8 @@ public class WorldLoader extends Agent {
 
         loadPhysicalPoints();
         loadGuides();
+        loadVehicles();
+
 
 //        Log.d(TAG, String.format("Loaded network: %d messages, %d arcs, %d WordNodes",
 //                users.getOutgoing().size(),
@@ -78,6 +81,21 @@ public class WorldLoader extends Agent {
                 @Override
                 public void construct(ResultSet rs) throws SQLException {
                     new Guide(Main.getRoot(), rs);
+                }
+            });
+//            for (DBMessage m : v)
+//                addToNetwork(m);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    private void loadVehicles() {
+        try {
+            DB.getDB().getVehicles (new DB.constructfromDB1() {
+                @Override
+                public void construct(ResultSet rs) throws SQLException {
+                    new Vehicle(Main.getRoot(), rs);
                 }
             });
 //            for (DBMessage m : v)

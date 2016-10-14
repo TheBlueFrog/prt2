@@ -28,8 +28,11 @@ public class Constants {
     public static double deg2PixelX(double x) {
         return (Location.deg2MeterX(x) / Location.MapWidthMeters * WindowWidthPixels) + (WindowWidthPixels / 2.0);
     }
+    // screen Y increases going down, map going up
     public static double deg2PixelY(double y) {
-        return (Location.deg2MeterY(y) / Location.MapHeightMeters * WindowHeightPixels) + (WindowHeightPixels / 2.0);
+        return WindowHeightPixels -
+                ((Location.deg2MeterY(y) / Location.MapHeightMeters * WindowHeightPixels)
+                        + (WindowHeightPixels / 2.0));
     }
 
 }
