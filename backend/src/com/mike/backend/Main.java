@@ -72,7 +72,6 @@ public class Main
 	{
 		mAgents.add(new AgentInfo(MyClock.class, 1));
 		mAgents.add(new AgentInfo(Simulation.class, 1));
-		mAgents.add(new AgentInfo(VehicleAgent.class, 1));
 	};
 
 	public static boolean isAnimation() {

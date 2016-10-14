@@ -4,7 +4,6 @@ import com.mike.agents.Agent;
 import com.mike.agents.Clock;
 import com.mike.agents.Framework;
 import com.mike.agents.Message;
-import com.mike.backend.agents.VehicleAgent;
 import com.mike.backend.db.DB;
 import com.mike.backend.db.RootNode;
 import com.mike.backend.model.Guide;
@@ -75,6 +74,7 @@ public class Simulation extends Agent {
         loadGuides();
         loadVehicles();
 
+        connectGuides();
 
 //        Log.d(TAG, String.format("Loaded network: %d messages, %d arcs, %d WordNodes",
 //                users.getOutgoing().size(),
@@ -82,6 +82,14 @@ public class Simulation extends Agent {
 //                WordNode.getCount()));
 
         //          dump(users);
+
+    }
+
+    /**
+     now that all the guides are loaded, make connections between
+     Guide.to and Guide.from if they are the same physical
+     */
+    private void connectGuides() {
 
     }
 
@@ -132,10 +140,10 @@ public class Simulation extends Agent {
         }
     }
 
-    public VehicleAgent getVehicleAgent(String name) {
-        Agent agent = mFramework.findByName(name);
-        assert agent instanceof VehicleAgent;
-
-        return (VehicleAgent) agent;
-    }
+//    public VehicleAgent getVehicleAgent(String name) {
+//        Agent agent = mFramework.findByName(name);
+//        assert agent instanceof VehicleAgent;
+//
+//        return (VehicleAgent) agent;
+//    }
 }

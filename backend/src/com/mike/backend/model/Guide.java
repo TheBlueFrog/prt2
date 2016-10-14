@@ -90,4 +90,18 @@ public class Guide extends PhysicalObject {
     public PhysicalPoint getFrom() {
         return from;
     }
+
+    public List<Guide> getNextGuides() {
+        return Guide.nextGuides(to);
+    }
+
+    private static List<Guide> nextGuides(PhysicalPoint to) {
+        List<Guide> v = new ArrayList<>();
+        for (long id : knownGuides.keySet()) {
+            Guide guide = knownGuides.get(id);
+            if (guide.from.equals(to))
+                v.add(guide);
+        }
+        return v;
+    }
 }

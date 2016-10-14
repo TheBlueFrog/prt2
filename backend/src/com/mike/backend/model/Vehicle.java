@@ -2,7 +2,6 @@ package com.mike.backend.model;
 
 import com.mike.backend.Constants;
 import com.mike.backend.Simulation;
-import com.mike.backend.agents.VehicleAgent;
 import com.mike.backend.db.Node;
 import com.mike.util.Location;
 
@@ -147,5 +146,18 @@ public class Vehicle extends PhysicalObject {
 
     public void setGuideDistance(double guideDistance) {
         this.guideDistance = guideDistance;
+    }
+
+    public Guide getGuide() {
+        return guide;
+    }
+
+    public void setGuide(Guide guide) {
+        this.guide = guide;
+        guideDistance = 0.0;
+    }
+
+    public void setVelocity(double velocity) {
+        this.velocity = velocity;
     }
 }
