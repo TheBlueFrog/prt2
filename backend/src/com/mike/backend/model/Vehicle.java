@@ -101,7 +101,7 @@ public class Vehicle extends PhysicalObject {
             double x = Constants.deg2PixelX(loc.x);
             double y = Constants.deg2PixelY(loc.y);
 
-            Shape s = new Ellipse2D.Double(x, y, 3.0, 3.0);
+            Shape s = new Ellipse2D.Double(x - 2, y - 2, 4.0, 4.0);
 
             Color c = Color.gray;
 //        if (task != null) {
@@ -119,12 +119,35 @@ public class Vehicle extends PhysicalObject {
     }
 
     /**
+     @return meters to nearest other vehicle
+     @param vehicle
+     */
+    public static double closestVehicleM(Vehicle vehicle) {
+        double closestM = Double.POSITIVE_INFINITY;
+        Location loc = vehicle.getLocation();
+        for (long id : knownVehicles.keySet())
+            if (id != vehicle.getID()) {
+                Vehicle v = Vehicle.get(id);
+                double d = v.distance(loc);
+                if (d < closestM) {
+                    closestM = d;
+                }
+            }
+
+        return closestM;
+    }
+
+    public double distance(Location location) {
+        return getLocation().distance(location);
+    }
+
+    /**
      the vehicle is along the guide somewhere, that is
      given by the guideDistance fraction
 
      @return
      */
-    private Location getLocation() {
+    public Location getLocation() {
         double dx = guide.getTo().getX() - guide.getFrom().getX();
         double dy = guide.getTo().getY() - guide.getFrom().getY();
         double x = guide.getFrom().getX() + (dx * guideDistance);
@@ -152,12 +175,20 @@ public class Vehicle extends PhysicalObject {
         return guide;
     }
 
+    public void setVelocity(double velocity) {
+        this.velocity = velocity;
+    }
+
+    public double getVelocity() {
+        return velocity;
+    }
+
     public void setGuide(Guide guide) {
         this.guide = guide;
         guideDistance = 0.0;
     }
 
-    public void setVelocity(double velocity) {
-        this.velocity = velocity;
+    public void slowDown() {
+        this.velocity *= 0.9;
     }
 }

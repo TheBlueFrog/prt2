@@ -10,12 +10,26 @@ CREATE TABLE PhysicalPoints (
     X DOUBLE,
     Y DOUBLE
     );
-INSERT INTO "PhysicalPoints" VALUES(null,    0,    0);
-INSERT INTO "PhysicalPoints" VALUES(null,  300,    0);
-INSERT INTO "PhysicalPoints" VALUES(null,  300,  300);
-INSERT INTO "PhysicalPoints" VALUES(null,    0,  300);
-INSERT INTO "PhysicalPoints" VALUES(null, -300,  600);
-INSERT INTO "PhysicalPoints" VALUES(null,  600, 1200);
+INSERT INTO "PhysicalPoints" VALUES(null, -3000, -3000);
+INSERT INTO "PhysicalPoints" VALUES(null,  -500, -3000);
+INSERT INTO "PhysicalPoints" VALUES(null,   500, -3000);
+INSERT INTO "PhysicalPoints" VALUES(null,  3000, -3000);
+
+INSERT INTO "PhysicalPoints" VALUES(null, -3000,  -500);
+INSERT INTO "PhysicalPoints" VALUES(null,  -500,  -500);
+INSERT INTO "PhysicalPoints" VALUES(null,   500,  -500);
+INSERT INTO "PhysicalPoints" VALUES(null,  3000,  -500);
+
+INSERT INTO "PhysicalPoints" VALUES(null, -3000,   500);
+INSERT INTO "PhysicalPoints" VALUES(null,  -500,   500);
+INSERT INTO "PhysicalPoints" VALUES(null,   500,   500);
+INSERT INTO "PhysicalPoints" VALUES(null,  3000,   500);
+
+INSERT INTO "PhysicalPoints" VALUES(null, -3000,  3000);
+INSERT INTO "PhysicalPoints" VALUES(null,  -500,  3000);
+INSERT INTO "PhysicalPoints" VALUES(null,   500,  3000);
+INSERT INTO "PhysicalPoints" VALUES(null,  3000,  3000);
+
 
 
 CREATE TABLE Guides (
@@ -23,11 +37,31 @@ CREATE TABLE Guides (
     FromPhysicalPointID INTEGER,
     ToPhysicalPointID INTEGER
     );
-INSERT INTO "Guides" VALUES(null,  1, 2);
-INSERT INTO "Guides" VALUES(null,  2, 3);
-INSERT INTO "Guides" VALUES(null,  3, 4);
-INSERT INTO "Guides" VALUES(null,  4, 5);
+INSERT INTO "Guides" VALUES(null,  1, 5);
 INSERT INTO "Guides" VALUES(null,  5, 6);
+INSERT INTO "Guides" VALUES(null,  6, 2);
+INSERT INTO "Guides" VALUES(null,  2, 1);
+
+INSERT INTO "Guides" VALUES(null,  3, 7);
+INSERT INTO "Guides" VALUES(null,  7, 8);
+INSERT INTO "Guides" VALUES(null,  8, 4);
+INSERT INTO "Guides" VALUES(null,  4, 3);
+
+INSERT INTO "Guides" VALUES(null,   9, 13);
+INSERT INTO "Guides" VALUES(null,  13, 14);
+INSERT INTO "Guides" VALUES(null,  14, 10);
+INSERT INTO "Guides" VALUES(null,  10,  9);
+
+INSERT INTO "Guides" VALUES(null,  11, 15);
+INSERT INTO "Guides" VALUES(null,  15, 16);
+INSERT INTO "Guides" VALUES(null,  16, 12);
+INSERT INTO "Guides" VALUES(null,  12, 11);
+
+INSERT INTO "Guides" VALUES(null,  10,  6);
+INSERT INTO "Guides" VALUES(null,   6,  7);
+INSERT INTO "Guides" VALUES(null,   7, 11);
+INSERT INTO "Guides" VALUES(null,  11, 10);
+
 
 CREATE TABLE Vehicles (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -36,8 +70,11 @@ CREATE TABLE Vehicles (
     Velocity DOUBLE,
     Length DOUBLE
     );
-INSERT INTO "Vehicles" VALUES(null,  1, 0.0, 1.0, 1.0);
-
+INSERT INTO "Vehicles" VALUES(null,   1, 0.0, 0.1, 1.0);
+INSERT INTO "Vehicles" VALUES(null,  11, 0.0, 1.0, 1.0);
+INSERT INTO "Vehicles" VALUES(null,   6, 0.0, 0.4, 1.0);
+INSERT INTO "Vehicles" VALUES(null,   4, 0.0, 0.8, 1.0);
+INSERT INTO "Vehicles" VALUES(null,  13, 0.0, 1.2, 1.0);
 
 
 /*

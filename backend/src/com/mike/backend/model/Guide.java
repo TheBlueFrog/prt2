@@ -21,6 +21,7 @@ import java.util.Map;
 public class Guide extends PhysicalObject {
 
     static private Map<Long, Guide> knownGuides = new HashMap<>();
+    private double length;
 
     static public Map<Long, Guide> getKnownGuides() {
         return knownGuides;
@@ -53,6 +54,8 @@ public class Guide extends PhysicalObject {
         this.to = PhysicalPoint.get(rs.getLong(3));
         this.to.add(this);
 
+        length = from.distance(to);
+
         knownGuides.put(id, this);
     }
 
@@ -68,10 +71,10 @@ public class Guide extends PhysicalObject {
 
             Shape s = new Line2D.Double(x1, y1, x2, y2);
 
-        Color c = Color.gray;
+        Color c = Color.LIGHT_GRAY;
 //        if (task != null) {
 //            if (task.isPickup())
-                c = Color.red;
+//                c = Color.red;
 //            else if (task.isDelivery())
 //                c = Color.blue;
 ////            else
@@ -103,5 +106,9 @@ public class Guide extends PhysicalObject {
                 v.add(guide);
         }
         return v;
+    }
+
+    public double getLength() {
+        return length;
     }
 }

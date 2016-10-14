@@ -82,4 +82,8 @@ public class PhysicalPoint extends Node {
     public double getY() {
         return location.y;
     }
+
+    public double distance(PhysicalPoint to) {
+        return location.distance(to.location);
+    }
 }

@@ -8,6 +8,7 @@ package com.mike.backend;
 import com.mike.util.Location;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -21,6 +22,8 @@ public class Constants {
 
     public static double WindowWidthPixels = 500;
     public static double WindowHeightPixels = 500;
+
+    public static Random random = new Random(12734);
 
     // convert from Lon/Lat to meters on the map and then
     // from meters to pixels
