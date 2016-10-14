@@ -1,6 +1,8 @@
 package com.mike.backend.model;
 
 import com.mike.backend.Constants;
+import com.mike.backend.Simulation;
+import com.mike.backend.agents.VehicleAgent;
 import com.mike.backend.db.Node;
 import com.mike.util.Location;
 
@@ -33,6 +35,18 @@ public class Vehicle extends PhysicalObject {
         return knownVehicles.get(id);
     }
 
+    /**
+     each time the simulation clock ticks this will be invoked,
+     do the needful
+     */
+    static public void tick() {
+        for (long id : knownVehicles.keySet()) {
+            Vehicle vehicle = Vehicle.get(id);
+            vehicle.ticker();
+        }
+    }
+
+    private VehicleController controller;
 
     private Guide guide;
     private double guideDistance;
@@ -50,17 +64,20 @@ public class Vehicle extends PhysicalObject {
          Guide INTEGER,
          GuideDistance DOUBLE,
          Velocity DOUBLE,
-         Length DOUBLE
+         Length DOUBLE,
+         ControllerName TEXT
 
      @throws SQLException
      */
-    public Vehicle(Node parent, ResultSet rs) throws SQLException {
+    public Vehicle(Simulation simulation, Node parent, ResultSet rs) throws SQLException {
         super(parent, rs.getLong(1));
 
         this.guide = Guide.get(rs.getLong(2));
         this.guideDistance = rs.getDouble((3));
         this.velocity = rs.getDouble(4);
         this.length = rs.getDouble(5);
+
+        this.controller = new VehicleController(); //rs.getString(6);
 
         knownVehicles.put(id, this);
    }
@@ -115,5 +132,20 @@ public class Vehicle extends PhysicalObject {
         double y = guide.getFrom().getY() + (dy * guideDistance);
         Location loc = new Location(x, y);
         return loc;
+    }
+
+    /**
+     move vehicle one tick
+     */
+    public void ticker () {
+        controller.tick(this);
+    }
+
+    public double getGuideDistance() {
+        return guideDistance;
+    }
+
+    public void setGuideDistance(double guideDistance) {
+        this.guideDistance = guideDistance;
     }
 }

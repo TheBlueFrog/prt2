@@ -9,6 +9,7 @@ abstract public class PhysicalObject extends Node {
 
     public abstract String getTag();
 
+
     public PhysicalObject(Node parent, long id) {
         super(parent, id);
     }

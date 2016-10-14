@@ -64,17 +64,21 @@ public class Controls extends JPanel implements ActionListener {
             mFrame.pack();
             mFrame.setVisible(true);
 
-            int delay = 100; // milliseconds
+            int delay = 500; // milliseconds
             ActionListener taskPerformer = new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
 
                     if (running) {
 
-//                        Main.simulation.step();
+                        Main.stepSimulation();
                         Main.repaint();
                     }
                 }
             };
+
+            // stepping happens at the Agent level driven
+            // by the Clock agent
+
 //            new Timer(delay, taskPerformer).start();
         }
 

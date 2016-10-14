@@ -28,6 +28,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Main
 {
 	private static Framework mFramework;
@@ -35,8 +36,7 @@ public class Main
 
 	public static Drawing drawing;
 	private static Controls mControls;
-
-	private static RootNode root;
+//	private static Simulation simulation;
 
 	public static void main(String[] args)
 	{
@@ -49,7 +49,7 @@ public class Main
 			e.printStackTrace();
 		}
 
-		root = new RootNode();
+//		simulation = new Simulation();
 
 		//Schedule a job for the event-dispatching thread:
 		//creating and showing this application's GUI.
@@ -57,7 +57,6 @@ public class Main
 			public void run() {
 				// create the controls and drawing windows
 				mControls = new Controls();
-
 				drawing = new Drawing(1.0);
 
 				mFramework = new Framework(mAgents);
@@ -72,7 +71,8 @@ public class Main
 	static
 	{
 		mAgents.add(new AgentInfo(MyClock.class, 1));
-		mAgents.add(new AgentInfo(WorldLoader.class, 1));
+		mAgents.add(new AgentInfo(Simulation.class, 1));
+		mAgents.add(new AgentInfo(VehicleAgent.class, 1));
 	};
 
 	public static boolean isAnimation() {
@@ -80,14 +80,9 @@ public class Main
 	}
 
 
-	// convert map coords (Lat, Lon) into screen display coords
 
 	public static void paint(final Graphics2D g2) {
-
-//        Log.d(TAG, "in paint");
-		PhysicalPoint.paint(g2);
-		Guide.paint(g2);
-		Vehicle.paint(g2);
+		Simulation.paint(g2);
 
 //		mFramework.walk(new Framework.agentWalker() {
 //			@Override
@@ -104,7 +99,7 @@ public class Main
 			Main.drawing.mFrame.repaint();
 	}
 
-	public static RootNode getRoot() {
-		return root;
+	public static void stepSimulation() {
+//		simulation.step();
 	}
 }

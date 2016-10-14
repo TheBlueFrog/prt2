@@ -6,6 +6,7 @@ package com.mike.agents;
  */
 
 import com.mike.util.Log;
+import sun.management.resources.agent;
 
 import java.awt.*;
 import java.lang.reflect.Constructor;
@@ -13,15 +14,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.List;
 
-public class Framework
-{
+public class Framework {
 	private static final String TAG = Framework.class.getSimpleName();
 
-	static public enum State { Start, AgentsRegistering, AgentsRunning };
+	static public enum State {Start, AgentsRegistering, AgentsRunning}
+
+	;
 
 	private State state = State.Start;
 
-	public State getState () { return this.state; }
+	public State getState() {
+		return this.state;
+	}
 
 
 	private List<AgentInfo> agentInfo = null;
@@ -29,21 +33,17 @@ public class Framework
 	public Framework(List<AgentInfo> agents) {
 
 		// setup the agents
-		try
-		{
+		try {
 			agentInfo = agents;
 
 			state = State.AgentsRegistering;
 			setupAgents();
-		}
-		catch(IllegalAccessException | IllegalArgumentException | InstantiationException | InvocationTargetException| NoSuchMethodException | SecurityException e)
-		{
+		} catch (IllegalAccessException | IllegalArgumentException | InstantiationException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void setupAgents() throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
-	{
+	private void setupAgents() throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		for (AgentInfo x : agentInfo) {
 
 			Constructor<? extends Agent> c = x.agentClass.getConstructor(Framework.class, Integer.class);
@@ -56,9 +56,8 @@ public class Framework
 	}
 
 	/**
-	 * agents will notify us when they are ready, when all agents
-	 * are ready we notify all agents
-	 *
+	 agents will notify us when they are ready, when all agents
+	 are ready we notify all agents
 	 */
 	public void register(Agent agent) {
 		for (AgentInfo x : agentInfo) {
@@ -96,11 +95,10 @@ public class Framework
 	}
 
 	/**
-	 * send message to recipient
-	 * @param m
+	 send message to recipient
+	 @param m
 	 */
-	public boolean send(Message m)
-	{
+	public boolean send(Message m) {
 		if (m.mRecipient == null)
 			throw new IllegalStateException("Message has no recipient");
 
@@ -123,44 +121,50 @@ public class Framework
 //	}
 
 	/**
-	 * assemble a list of agents to send the message to,
-	 *
-	 * @param class1		either leaf class or interior class in the agent hierarchy, if
-	 *                      interior all derived classes match
-	 * @param serialNumber	either -1 or explicit sn, iof -1 matches all sn, there is code
-	 *                      in the dispatching of the message to patch the sn back to what
-	 *                      it should be
-     * @return
-     */
-	private List<Agent> getRecipients(Class<? extends Agent> class1, int serialNumber)
-	{
+	 assemble a list of agents to send the message to,
+	 @param class1       either leaf class or interior class in the agent hierarchy, if
+	 interior all derived classes match
+	 @param serialNumber either -1 or explicit sn, iof -1 matches all sn, there is code
+	 in the dispatching of the message to patch the sn back to what
+	 it should be
+	 @return
+	 */
+	private List<Agent> getRecipients(Class<? extends Agent> class1, int serialNumber) {
 		List<Agent> v = new ArrayList<Agent>();
-		for (AgentInfo a : agentInfo)
-		{
+		for (AgentInfo a : agentInfo) {
 			if (class1.isAssignableFrom(a.agentClass)) {
 				if (serialNumber == -1) {
 					for (int i : a.agents.keySet())
 						v.add(a.agents.get(i));
-				}
-				else {
+				} else {
 					Agent agent = a.agents.get(serialNumber);
 					if (agent.getSerialNumber() == serialNumber)
 						v.add(agent);
 				}
 			}
 		}
-		
+
 		return v;
 	}
 
 	static public interface agentWalker {
 		public void f(Agent a);
 	}
-	public void walk (agentWalker f) {
+
+	public void walk(agentWalker f) {
 		for (AgentInfo ai : agentInfo) {
 			for (int i = 0; i < ai.copies; ++i) {
 				f.f(ai.agents.get(i));
 			}
 		}
+	}
+
+	public Agent findByName(String name) {
+		for (AgentInfo x : agentInfo) {
+			if (x.agentClass.getSimpleName().equals(name)) {
+				return x.agents.get(0);  // @ToDo // FIXME: 10/14/2016 why 0?
+			}
+		}
+		return null;
 	}
 }
