@@ -1,8 +1,11 @@
 package com.mike.backend.model;
 
+import com.mike.backend.Constants;
 import com.mike.backend.db.Node;
 import com.mike.util.Location;
 
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -41,6 +44,10 @@ public class PhysicalPoint extends Node {
         children.add(object);
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
     @Override
     public String getTag() {
         return PhysicalPoint.class.getSimpleName();
@@ -49,5 +56,22 @@ public class PhysicalPoint extends Node {
     @Override
     public String toString() {
         return String.format("{%s: %s, %d children}", getTag(), location.toString(), children.size());
+    }
+
+    public static void paint(Graphics2D g2) {
+
+        for (long id : knownPoints.keySet()) {
+            PhysicalPoint point = knownPoints.get(id);
+            Shape circle = null;
+            double x = Constants.deg2PixelX(point.getLocation().x);
+            double y = Constants.deg2PixelY(point.getLocation().y);
+
+            circle = new Ellipse2D.Double(x-1, y-1, 2.0f, 2.0f);
+
+            Color c = Color.blue;
+
+            g2.setColor(c);
+            g2.draw(circle);
+        }
     }
 }

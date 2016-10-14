@@ -1,26 +1,40 @@
 PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
 
+/* auto inc IDs start at 1 */
+
+/* coords are on a map from -5000 -> 5000 in both directions */
+
 CREATE TABLE PhysicalPoints (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     X DOUBLE,
     Y DOUBLE
     );
-INSERT INTO "PhysicalPoints" VALUES(null,  0,  0);
-INSERT INTO "PhysicalPoints" VALUES(null, 10,  0);
-INSERT INTO "PhysicalPoints" VALUES(null, 10, 10);
-INSERT INTO "PhysicalPoints" VALUES(null,  0, 10);
+INSERT INTO "PhysicalPoints" VALUES(null,   0,   0);
+INSERT INTO "PhysicalPoints" VALUES(null, 300,   0);
+INSERT INTO "PhysicalPoints" VALUES(null, 300, 300);
+INSERT INTO "PhysicalPoints" VALUES(null,   0, 300);
 
 
+CREATE TABLE Guides (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    FromPhysicalPointID INTEGER,
+    ToPhysicalPointID INTEGER
+    );
+INSERT INTO "Guides" VALUES(null,  1, 2);
+INSERT INTO "Guides" VALUES(null,  2, 3);
+INSERT INTO "Guides" VALUES(null,  3, 4);
+
+/*
 CREATE TABLE Vehicles (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    X DOUBLE,
-    Y DOUBLE,
+    Guide INTEGER,
+    GuideDistance DOUBLE,
     Heading DOUBLE,
     Velocity DOUBLE,
     Length DOUBLE
     );
-
+*/
 
 
 

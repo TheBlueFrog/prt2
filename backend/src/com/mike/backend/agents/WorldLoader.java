@@ -8,8 +8,10 @@ package com.mike.backend.agents;
 import com.mike.agents.Agent;
 import com.mike.agents.Framework;
 import com.mike.agents.Message;
+import com.mike.backend.Main;
 import com.mike.backend.db.DB;
 import com.mike.backend.db.RootNode;
+import com.mike.backend.model.Guide;
 import com.mike.backend.model.PhysicalPoint;
 
 import java.sql.ResultSet;
@@ -23,8 +25,6 @@ import java.sql.SQLException;
 public class WorldLoader extends Agent {
     private static final String TAG = WorldLoader.class.getSimpleName();
 
-    private RootNode root; // root node
-
     @Override
     protected String getClassName() {
         return TAG;
@@ -34,8 +34,6 @@ public class WorldLoader extends Agent {
         super (f, sn);
 
         assert sn == 0;
-
-        root = new RootNode();
 
         // load the world from the DB
         // block the Framework from starting everything running until
@@ -47,19 +45,8 @@ public class WorldLoader extends Agent {
 
     private void loadWorld() {
 
-        try {
-            DB.getDB().getPhysicalPoints (new DB.constructfromDB1() {
-                @Override
-                public void construct(ResultSet rs) throws SQLException {
-                    new PhysicalPoint(root, rs);
-                }
-            });
-//            for (DBMessage m : v)
-//                addToNetwork(m);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        loadPhysicalPoints();
+        loadGuides();
 
 //        Log.d(TAG, String.format("Loaded network: %d messages, %d arcs, %d WordNodes",
 //                users.getOutgoing().size(),
@@ -68,6 +55,37 @@ public class WorldLoader extends Agent {
 
         //          dump(users);
 
+    }
+
+    private void loadPhysicalPoints() {
+        try {
+            DB.getDB().getPhysicalPoints (new DB.constructfromDB1() {
+                @Override
+                public void construct(ResultSet rs) throws SQLException {
+                    new PhysicalPoint(Main.getRoot(), rs);
+                }
+            });
+//            for (DBMessage m : v)
+//                addToNetwork(m);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    private void loadGuides() {
+        try {
+            DB.getDB().getGuides (new DB.constructfromDB1() {
+                @Override
+                public void construct(ResultSet rs) throws SQLException {
+                    new Guide(Main.getRoot(), rs);
+                }
+            });
+//            for (DBMessage m : v)
+//                addToNetwork(m);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

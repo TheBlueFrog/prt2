@@ -268,9 +268,17 @@ public class DB extends AbstractDB {
 //    }
 
     public void getPhysicalPoints(constructfromDB1 cb) throws SQLException {
+        String q = String.format("select * from %s", "PhysicalPoints");
+        getObjects(cb, q);
+    }
+    public void getGuides(constructfromDB1 cb) throws SQLException {
+        String q = String.format("select * from %s", "Guides");
+        getObjects(cb, q);
+    }
+
+    private void getObjects (constructfromDB1 cb, String q) throws SQLException {
         PreparedStatement s = null;
         try {
-            String q = String.format("select * from %s", "PhysicalPoints");
             s = mDB.prepareStatement(q);
             ResultSet rs = s.executeQuery();
 
@@ -281,6 +289,7 @@ public class DB extends AbstractDB {
             cleanup(s);
         }
     }
+
 
 //    private long findOrInsertItem(String text) throws SQLException {
 //        long rowid = getItemDataID(text);

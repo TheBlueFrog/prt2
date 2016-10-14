@@ -18,21 +18,23 @@ public class Location {
     // at scales where earth curvature doesn't matter
 
 
-    // lat lon of map upper left
-    static public double MapLeft = -123.36;
-    static public double MapTop = 45.8;
+    // lat lon of map upper left, called degrees but fake it with meters
+    static public double MapLeft = -5000.0;
+    static public double MapTop = 5000.0;
 
     // lat lon of map lower right
-    static public double MapRight = -121.6;
-    static public double MapBottom = 44.9;
+    static public double MapRight = 5000.0;
+    static public double MapBottom = -5000.0;
 
-    // width/height of map
+    // width/height of map in degrees
     static public double MapWidthDeg = (MapRight - MapLeft);
     static public double MapHeightDeg = (MapTop - MapBottom);
 
-    static public double MapWidthMeters = 133341.0;   // measured in Google Earth at mid-latitude
-    static public double MapHeightMeters = 116030.0;
+    // map size in meters
+    static public double MapWidthMeters = MapWidthDeg; // make degress === meters
+    static public double MapHeightMeters = MapHeightDeg;
 
+    // meters to degrees
     public static double meter2DegX(double dx) {
         return dx / MapWidthMeters * MapWidthDeg;
     }
@@ -40,9 +42,8 @@ public class Location {
         return dy / MapHeightMeters * MapHeightDeg;
     }
 
-    static public double deg2MeterX(double xDeg) {
-        return (xDeg / MapWidthDeg) * MapWidthMeters;
-    }
+    // degress to meters
+    static public double deg2MeterX(double xDeg) { return (xDeg / MapWidthDeg) * MapWidthMeters; }
     static public double deg2MeterY(double yDeg) {
         return (yDeg / MapHeightDeg) * MapHeightMeters;
     }

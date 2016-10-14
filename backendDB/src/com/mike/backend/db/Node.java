@@ -20,7 +20,9 @@ abstract public class Node {
     protected Node (Node parent, long id) {
         this.id = id;
         this.parent = parent;
-        this.parent.children.add(this);
+
+        if (parent != null)
+            this.parent.children.add(this);
     }
 
     public long getID() { return id; }
