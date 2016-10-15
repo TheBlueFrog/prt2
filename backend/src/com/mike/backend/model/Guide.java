@@ -21,7 +21,9 @@ import java.util.Map;
 public class Guide extends PhysicalObject {
 
     static private Map<Long, Guide> knownGuides = new HashMap<>();
+    private double heading;
     private double length;
+    private double maxVelocity;
 
     static public Map<Long, Guide> getKnownGuides() {
         return knownGuides;
@@ -54,7 +56,9 @@ public class Guide extends PhysicalObject {
         this.to = PhysicalPoint.get(rs.getLong(3));
         this.to.add(this);
 
+        maxVelocity = 13.4; // about 30mph in m/s
         length = from.distance(to);
+        heading = Math.atan2(to.getY() - from.getY(), to.getX() - from.getX());
 
         knownGuides.put(id, this);
     }
@@ -110,5 +114,16 @@ public class Guide extends PhysicalObject {
 
     public double getLength() {
         return length;
+    }
+
+    /**
+     return current heading in radians
+     */
+    public double getHeadingR() {
+        return heading;
+    }
+
+    public double getMaxVelocity() {
+        return maxVelocity;
     }
 }

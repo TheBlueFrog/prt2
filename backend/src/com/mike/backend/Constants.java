@@ -20,8 +20,8 @@ public class Constants {
 
     public static double MetersPerMile = 1609.34;
 
-    public static double WindowWidthPixels = 500;
-    public static double WindowHeightPixels = 500;
+    public static double WindowWidthPixels = 750;
+    public static double WindowHeightPixels = 750;
 
     public static Random random = new Random(12734);
 

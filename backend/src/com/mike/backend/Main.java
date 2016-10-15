@@ -101,4 +101,8 @@ public class Main
 	public static void stepSimulation() {
 //		simulation.step();
 	}
+
+	public static void setShowVehicleLables(boolean show) {
+		Vehicle.setShowLabels (show);
+	}
 }

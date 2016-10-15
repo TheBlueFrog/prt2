@@ -28,7 +28,7 @@ public class MyClock extends Clock {
             send(new Message(this, a.getClass(), a.getSerialNumber(), (Long) time));
 
         try {
-            sleep(animation ? 1 : 1);
+            sleep(animation ? 100 : 1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

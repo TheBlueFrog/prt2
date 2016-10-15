@@ -10,7 +10,8 @@ import javax.swing.*;
  * Created by mike on 2/14/2016.
  */
 public class Controls extends JPanel implements ActionListener {
-        protected JButton runButton, stepButton, pauseButton;
+    private JToggleButton showVehicleLabel;
+    protected JButton runButton, stepButton, pauseButton;
         private JFrame mFrame;
 
         boolean running = true;
@@ -40,10 +41,17 @@ public class Controls extends JPanel implements ActionListener {
             pauseButton.setActionCommand("pause");
             pauseButton.setEnabled(running);
 
+            showVehicleLabel = new JToggleButton("Vehicle labels");
+            //showVehicleLabel.setMnemonic(KeyEvent.VK_E);
+            showVehicleLabel.setActionCommand("show-vehicle-labels");
+            showVehicleLabel.setEnabled(true);
+            showVehicleLabel.setSelected(false);
+
             // Listen for actions on the buttons
             runButton.addActionListener(this);
             stepButton.addActionListener(this);
             pauseButton.addActionListener(this);
+            showVehicleLabel.addActionListener(this);
 
             runButton.setToolTipText("Click this button to disable the middle button.");
             stepButton.setToolTipText("This middle button repaints");
@@ -53,6 +61,7 @@ public class Controls extends JPanel implements ActionListener {
             add(runButton);
             add(stepButton);
             add(pauseButton);
+            add(showVehicleLabel);
 
             mFrame = new JFrame("Controls");
             mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -93,6 +102,9 @@ public class Controls extends JPanel implements ActionListener {
                 stepButton.setEnabled(false);
                 pauseButton.setEnabled(true);
                 running = true;
+            }
+            else if ("show-vehicle-labels".equals(e.getActionCommand())) {
+                Main.setShowVehicleLables(showVehicleLabel.isSelected());
             }
             else if ("step".equals(e.getActionCommand())) {
 //                Main.simulation.step();

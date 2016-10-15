@@ -7,7 +7,6 @@ import com.mike.util.Location;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -25,6 +24,8 @@ import java.util.Map;
 public class Vehicle extends PhysicalObject {
 
     static private Map<Long, Vehicle> knownVehicles = new HashMap<>();
+
+    private static boolean showLabels = false;
 
     static public Map<Long, Vehicle> getKnownGuides() {
         return knownVehicles;
@@ -53,6 +54,8 @@ public class Vehicle extends PhysicalObject {
     private double heading;
     private double velocity; // in the direction it is heading
     private double length;
+
+    private boolean slowing = false;
 
     /**
      create from database record
@@ -103,39 +106,55 @@ public class Vehicle extends PhysicalObject {
 
             Shape s = new Ellipse2D.Double(x - 2, y - 2, 4.0, 4.0);
 
-            Color c = Color.gray;
-//        if (task != null) {
-//            if (task.isPickup())
-            c = Color.MAGENTA;
-//            else if (task.isDelivery())
-//                c = Color.blue;
-////            else
-////                c = Color.gray;
-//        }
+            Color c = Color.blue;
+            if (vehicle.slowing)
+                c = Color.red;
 
             g2.setColor(c);
             g2.draw(s);
+
+            if (showLabels)
+                g2.drawString(Long.toString(id), (float) x, (float) (y - 2.0));
         }
     }
 
     /**
-     @return meters to nearest other vehicle
+     @return meters to nearest other vehicle, in the direction
+     we are going. otherwise the vehicle ahead will slow for
+     us as well
+
      @param vehicle
      */
     public static double closestVehicleM(Vehicle vehicle) {
         double closestM = Double.POSITIVE_INFINITY;
-        Location loc = vehicle.getLocation();
+        Location myLoc = vehicle.getLocation();
         for (long id : knownVehicles.keySet())
             if (id != vehicle.getID()) {
                 Vehicle v = Vehicle.get(id);
-                double d = v.distance(loc);
-                if (d < closestM) {
-                    closestM = d;
-                }
+                Location otherLoc = v.getLocation();
+                double d = myLoc.distance(otherLoc);
+                if (d < closestM)
+                    if (vehicle.isAhead(otherLoc)) {
+                        closestM = d;
+                    }
             }
 
         return closestM;
     }
+
+    static double R10 = 10.0 * ((2 * Math.PI) / 360.0);
+
+    /**
+     is the location ahead of us, we take that to mean within
+     +/- 10 deg of our current heading
+     */
+    private boolean isAhead(Location loc) {
+        double ourHeading = guide.getHeadingR();
+        Location ourLoc = getLocation();
+        double itsHeading = Math.atan2(loc.y - ourLoc.y, loc.x - ourLoc.x);
+        return Math.abs(ourHeading - itsHeading) < R10;
+    }
+
 
     public double distance(Location location) {
         return getLocation().distance(location);
@@ -160,7 +179,12 @@ public class Vehicle extends PhysicalObject {
      move vehicle one tick
      */
     public void ticker () {
+        clear();
         controller.tick(this);
+    }
+
+    private void clear () {
+        slowing = false;
     }
 
     public double getGuideDistance() {
@@ -189,6 +213,16 @@ public class Vehicle extends PhysicalObject {
     }
 
     public void slowDown() {
+        this.slowing = true;
         this.velocity *= 0.9;
+    }
+
+    public void adjustVelocityUpTowardsLimit() {
+        this.slowing = false;
+        this.velocity = Math.min(guide.getMaxVelocity(), velocity * 1.05);
+    }
+
+    public static void setShowLabels(boolean show) {
+        showLabels = show;
     }
 }

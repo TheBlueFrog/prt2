@@ -19,12 +19,12 @@ public class Location {
 
 
     // lat lon of map upper left, called degrees but fake it with meters
-    static public double MapLeft = -5000.0;
-    static public double MapTop = 5000.0;
+    static public double MapLeft = -500.0;
+    static public double MapTop = 500.0;
 
     // lat lon of map lower right
-    static public double MapRight = 5000.0;
-    static public double MapBottom = -5000.0;
+    static public double MapRight = 500.0;
+    static public double MapBottom = -500.0;
 
     // width/height of map in degrees
     static public double MapWidthDeg = (MapRight - MapLeft);

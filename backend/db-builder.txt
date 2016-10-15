@@ -10,25 +10,25 @@ CREATE TABLE PhysicalPoints (
     X DOUBLE,
     Y DOUBLE
     );
-INSERT INTO "PhysicalPoints" VALUES(null, -3000, -3000);
-INSERT INTO "PhysicalPoints" VALUES(null,  -500, -3000);
-INSERT INTO "PhysicalPoints" VALUES(null,   500, -3000);
-INSERT INTO "PhysicalPoints" VALUES(null,  3000, -3000);
+INSERT INTO "PhysicalPoints" VALUES(null, -450, -450);
+INSERT INTO "PhysicalPoints" VALUES(null,  -10, -450);
+INSERT INTO "PhysicalPoints" VALUES(null,   10, -450);
+INSERT INTO "PhysicalPoints" VALUES(null,  450, -450);
 
-INSERT INTO "PhysicalPoints" VALUES(null, -3000,  -500);
-INSERT INTO "PhysicalPoints" VALUES(null,  -500,  -500);
-INSERT INTO "PhysicalPoints" VALUES(null,   500,  -500);
-INSERT INTO "PhysicalPoints" VALUES(null,  3000,  -500);
+INSERT INTO "PhysicalPoints" VALUES(null, -450,  -125);
+INSERT INTO "PhysicalPoints" VALUES(null,  -10,  -125);
+INSERT INTO "PhysicalPoints" VALUES(null,   10,  -125);
+INSERT INTO "PhysicalPoints" VALUES(null,  450,  -125);
 
-INSERT INTO "PhysicalPoints" VALUES(null, -3000,   500);
-INSERT INTO "PhysicalPoints" VALUES(null,  -500,   500);
-INSERT INTO "PhysicalPoints" VALUES(null,   500,   500);
-INSERT INTO "PhysicalPoints" VALUES(null,  3000,   500);
+INSERT INTO "PhysicalPoints" VALUES(null, -450,   125);
+INSERT INTO "PhysicalPoints" VALUES(null,  -10,   125);
+INSERT INTO "PhysicalPoints" VALUES(null,   10,   125);
+INSERT INTO "PhysicalPoints" VALUES(null,  450,   125);
 
-INSERT INTO "PhysicalPoints" VALUES(null, -3000,  3000);
-INSERT INTO "PhysicalPoints" VALUES(null,  -500,  3000);
-INSERT INTO "PhysicalPoints" VALUES(null,   500,  3000);
-INSERT INTO "PhysicalPoints" VALUES(null,  3000,  3000);
+INSERT INTO "PhysicalPoints" VALUES(null, -450,  450);
+INSERT INTO "PhysicalPoints" VALUES(null,  -10,  450);
+INSERT INTO "PhysicalPoints" VALUES(null,   10,  450);
+INSERT INTO "PhysicalPoints" VALUES(null,  450,  450);
 
 
 
@@ -70,11 +70,11 @@ CREATE TABLE Vehicles (
     Velocity DOUBLE,
     Length DOUBLE
     );
-INSERT INTO "Vehicles" VALUES(null,   1, 0.0, 0.1, 1.0);
-INSERT INTO "Vehicles" VALUES(null,  11, 0.0, 1.0, 1.0);
-INSERT INTO "Vehicles" VALUES(null,   6, 0.0, 0.4, 1.0);
-INSERT INTO "Vehicles" VALUES(null,   4, 0.0, 0.8, 1.0);
-INSERT INTO "Vehicles" VALUES(null,  13, 0.0, 1.2, 1.0);
+INSERT INTO "Vehicles" VALUES(null,   1, 0.0, 10.1, 1.0);
+INSERT INTO "Vehicles" VALUES(null,  11, 0.0, 13.0, 1.0);
+INSERT INTO "Vehicles" VALUES(null,   6, 0.0,  8.4, 1.0);
+INSERT INTO "Vehicles" VALUES(null,   4, 0.0,  6.0, 1.0);
+INSERT INTO "Vehicles" VALUES(null,  13, 0.0,  5.2, 1.0);
 
 
 /*

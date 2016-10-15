@@ -48,6 +48,10 @@ public class VehicleController {
         if (tooCloseForVelocity(closestVehicleM, vehicle.getVelocity())) {
             vehicle.slowDown();
         }
+        else {
+            vehicle.adjustVelocityUpTowardsLimit ();
+        }
+
 
     }
 
@@ -58,7 +62,7 @@ public class VehicleController {
      @return
      */
     private boolean tooCloseForVelocity(double distance, double velocity) {
-        return distance < (velocity * 2.0);
+        return distance < (velocity * 15.0);
     }
 
 }
