@@ -4,13 +4,17 @@ import com.mike.backend.Constants;
 import com.mike.backend.Simulation;
 import com.mike.backend.db.Node;
 import com.mike.util.Location;
+import com.mike.util.Log;
 
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.mike.backend.model.PhysicalPoint.TAG;
 
 /**
  Created by mike on 10/12/2016.
@@ -51,7 +55,6 @@ public class Vehicle extends PhysicalObject {
     private Guide guide;
     private double guideDistance;
 
-    private double heading;
     private double velocity; // in the direction it is heading
     private double length;
 
@@ -94,27 +97,46 @@ public class Vehicle extends PhysicalObject {
         return String.format("{%s: on %s, %.2f}", getTag(), guide.toString(), guideDistance);
     }
 
-    public static void paint(Graphics2D g2) {
+    public static void paint(Graphics2D g2d) {
 
         for (long id : knownVehicles.keySet()) {
             Vehicle vehicle = Vehicle.get(id);
 
             Location loc = vehicle.getLocation();
 
+            // vehicle is a rectangle with the front at the location
+            // and the length trailing along behind it, center it
+            // side-to-side on the guide
+            //
+            // all vehicles are 2 meters wide
+
+            // @ToDo // FIXME: 10/16/2016 there is an artifact at a corner
+            // of the vehicle sticking out backwards along the new guide...
+
             double x = Constants.deg2PixelX(loc.x);
             double y = Constants.deg2PixelY(loc.y);
+            double vehicleWidth = Constants.deg2PixelYScale(1);
+            double vehicleLength = Constants.deg2PixelXScale(vehicle.length);
 
-            Shape s = new Ellipse2D.Double(x - 2, y - 2, 4.0, 4.0);
+            //Graphics2D gg = (Graphics2D) g2d.create();
+            AffineTransform saveTransform = g2d.getTransform();
+            AffineTransform identity = new AffineTransform();
+            g2d.setTransform(identity);
 
-            Color c = Color.blue;
-            if (vehicle.slowing)
-                c = Color.red;
+            Color c = vehicle.slowing ? Color.red : Color.blue;
+            g2d.setColor(c);
 
-            g2.setColor(c);
-            g2.draw(s);
+            Shape s = new Rectangle2D.Double(- vehicleLength, 0, vehicleLength, vehicleWidth*2);
+
+            g2d.translate(x, y);
 
             if (showLabels)
-                g2.drawString(Long.toString(id), (float) x, (float) (y - 2.0));
+                g2d.drawString(Long.toString(id), (float) 0, (float) 0);
+
+            g2d.rotate(- vehicle.getGuide().getHeadingR());
+            g2d.fill(s);
+
+            g2d.setTransform(saveTransform);
         }
     }
 
@@ -126,6 +148,7 @@ public class Vehicle extends PhysicalObject {
      @param vehicle
      */
     public static double closestVehicleM(Vehicle vehicle) {
+        Vehicle closestV = null;
         double closestM = Double.POSITIVE_INFINITY;
         Location myLoc = vehicle.getLocation();
         for (long id : knownVehicles.keySet())
@@ -133,11 +156,18 @@ public class Vehicle extends PhysicalObject {
                 Vehicle v = Vehicle.get(id);
                 Location otherLoc = v.getLocation();
                 double d = myLoc.distance(otherLoc);
-                if (d < closestM)
-                    if (vehicle.isAhead(otherLoc)) {
+                if (vehicle.couldHit(v)) {
+                    d -= v.length;      // worry about his length
+                    if (d < closestM) {
+                        closestV = v;
                         closestM = d;
                     }
+                }
             }
+
+        if (closestM < 3.0) {
+            Log.d(TAG, String.format("Vehicle %d too close to %d", vehicle.getID(), closestV.getID()));
+        }
 
         return closestM;
     }
@@ -145,14 +175,14 @@ public class Vehicle extends PhysicalObject {
     static double R10 = 10.0 * ((2 * Math.PI) / 360.0);
 
     /**
-     is the location ahead of us, we take that to mean within
-     +/- 10 deg of our current heading
+     is the vehicle someone we could hit?
+     note that if he is on another guide that is not connected
+     directly to our guide we don't care
      */
-    private boolean isAhead(Location loc) {
-        double ourHeading = guide.getHeadingR();
-        Location ourLoc = getLocation();
-        double itsHeading = Math.atan2(loc.y - ourLoc.y, loc.x - ourLoc.x);
-        return Math.abs(ourHeading - itsHeading) < R10;
+    private boolean couldHit(Vehicle vehicle) {
+        return     guide.equals(vehicle.getGuide())
+                || guide.connectsTo(vehicle.getGuide())
+                ;
     }
 
 

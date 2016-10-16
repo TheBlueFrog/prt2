@@ -126,4 +126,10 @@ public class Guide extends PhysicalObject {
     public double getMaxVelocity() {
         return maxVelocity;
     }
+
+    public boolean connectsTo(Guide guide) {
+        return     to.equals(guide.from) // normal following case
+                || to.equals(guide.to) // joining guides
+                ;
+    }
 }

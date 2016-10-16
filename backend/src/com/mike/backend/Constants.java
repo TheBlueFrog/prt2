@@ -38,4 +38,10 @@ public class Constants {
                         + (WindowHeightPixels / 2.0));
     }
 
+    public static double deg2PixelXScale(double x) {
+        return (Location.deg2MeterX(x) / Location.MapWidthMeters * WindowWidthPixels);
+    }
+    public static double deg2PixelYScale(double y) {
+        return (Location.deg2MeterY(y) / Location.MapHeightMeters * WindowHeightPixels);
+    }
 }
