@@ -129,7 +129,7 @@ public class Guide extends PhysicalObject {
 
     public boolean connectsTo(Guide guide) {
         return     to.equals(guide.from) // normal following case
-                || to.equals(guide.to) // joining guides
+                || ( ! from.equals(guide.from) && to.equals(guide.to)) // joining guides
                 ;
     }
 }

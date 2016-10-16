@@ -1,5 +1,7 @@
 package com.mike.backend;
 
+import com.mike.backend.model.Vehicle;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -45,7 +47,7 @@ public class Controls extends JPanel implements ActionListener {
             //showVehicleLabel.setMnemonic(KeyEvent.VK_E);
             showVehicleLabel.setActionCommand("show-vehicle-labels");
             showVehicleLabel.setEnabled(true);
-            showVehicleLabel.setSelected(false);
+            showVehicleLabel.setSelected(Vehicle.getShowLabels());
 
             // Listen for actions on the buttons
             runButton.addActionListener(this);

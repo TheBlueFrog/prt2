@@ -29,7 +29,9 @@ public class Vehicle extends PhysicalObject {
 
     static private Map<Long, Vehicle> knownVehicles = new HashMap<>();
 
-    private static boolean showLabels = false;
+    private static boolean showLabels = true;
+    public static boolean getShowLabels() { return showLabels; }
+    public static void setShowLabels(boolean show) { showLabels = show; }
 
     static public Map<Long, Vehicle> getKnownGuides() {
         return knownVehicles;
@@ -86,6 +88,7 @@ public class Vehicle extends PhysicalObject {
 
         knownVehicles.put(id, this);
    }
+
 
     @Override
     public String getTag() {
@@ -154,10 +157,14 @@ public class Vehicle extends PhysicalObject {
         for (long id : knownVehicles.keySet())
             if (id != vehicle.getID()) {
                 Vehicle v = Vehicle.get(id);
-                Location otherLoc = v.getLocation();
-                double d = myLoc.distance(otherLoc);
                 if (vehicle.couldHit(v)) {
-                    d -= v.length;      // worry about his length
+                    Location otherLoc = v.getLocation();
+                    double d = myLoc.distance(otherLoc);
+
+                    if (vehicle.getGuide().getTo().equals(v.getGuide().getFrom())) {
+                        d -= v.length;      // worry about his length
+                    }
+
                     if (d < closestM) {
                         closestV = v;
                         closestM = d;
@@ -166,7 +173,10 @@ public class Vehicle extends PhysicalObject {
             }
 
         if (closestM < 3.0) {
-            Log.d(TAG, String.format("Vehicle %d too close to %d", vehicle.getID(), closestV.getID()));
+            Log.d(TAG, String.format("Vehicle %d too close to %d, distance %.1f",
+                    vehicle.getID(),
+                    closestV.getID(),
+                    closestM));
         }
 
         return closestM;
@@ -180,7 +190,7 @@ public class Vehicle extends PhysicalObject {
      directly to our guide we don't care
      */
     private boolean couldHit(Vehicle vehicle) {
-        return     guide.equals(vehicle.getGuide())
+        return     (guide.equals(vehicle.getGuide()) && (getGuideDistance() < vehicle.getGuideDistance()))
                 || guide.connectsTo(vehicle.getGuide())
                 ;
     }
@@ -252,7 +262,4 @@ public class Vehicle extends PhysicalObject {
         this.velocity = Math.min(guide.getMaxVelocity(), velocity * 1.05);
     }
 
-    public static void setShowLabels(boolean show) {
-        showLabels = show;
-    }
 }
