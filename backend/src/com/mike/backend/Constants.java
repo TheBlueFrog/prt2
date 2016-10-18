@@ -5,8 +5,10 @@ package com.mike.backend;
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
+import com.mike.backend.model.Vehicle;
 import com.mike.util.Location;
 
+import java.awt.*;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -44,4 +46,12 @@ public class Constants {
     public static double deg2PixelYScale(double y) {
         return (Location.deg2MeterY(y) / Location.MapHeightMeters * WindowHeightPixels);
     }
+
+    public static double meter2PixelXScale(double x) {
+        return (x / Location.MapWidthMeters * WindowWidthPixels);
+    }
+    public static double meter2PixelYScale(double y) {
+        return (y / Location.MapHeightMeters * WindowHeightPixels);
+    }
+
 }

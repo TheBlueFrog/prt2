@@ -7,6 +7,7 @@ import com.mike.agents.Message;
 import com.mike.backend.db.DB;
 import com.mike.backend.db.RootNode;
 import com.mike.backend.model.Guide;
+import com.mike.backend.model.ObjectOnGuide;
 import com.mike.backend.model.PhysicalPoint;
 import com.mike.backend.model.Vehicle;
 
@@ -22,7 +23,7 @@ public class Simulation extends Agent {
 //        Log.d(TAG, "in paint");
         PhysicalPoint.paint(g2);
         Guide.paint(g2);
-        Vehicle.paint(g2);
+        ObjectOnGuide.paint(g2);
     }
 
     private RootNode root = null;
@@ -59,7 +60,7 @@ public class Simulation extends Agent {
     private void tick(long time) {
 //        PhysicalPoint.step();
 //        Guide.step();
-        Vehicle.tick();
+        ObjectOnGuide.tick();
 
         Main.repaint();
     }
@@ -129,7 +130,10 @@ public class Simulation extends Agent {
             DB.getDB().getVehicles (new DB.constructfromDB1() {
                 @Override
                 public void construct(ResultSet rs) throws SQLException {
-                    new Vehicle(Simulation.this, getRoot(), rs);
+                    if (rs.getInt(5) == 1)
+                        new Vehicle(Simulation.this, getRoot(), rs);
+                    else
+                        new LongVehicle(Simulation.this, getRoot(), rs);
                 }
             });
 //            for (DBMessage m : v)
