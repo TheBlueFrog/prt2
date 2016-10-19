@@ -1,5 +1,6 @@
 package com.mike.backend.model;
 
+import com.mike.backend.ComposedVehicle;
 import com.mike.backend.Constants;
 
 import java.util.List;
@@ -12,7 +13,7 @@ abstract public class AbstractVehicleController {
     /**
     called once per simulation clock tick
      */
-    abstract public void tick(Vehicle vehicle);
+    abstract public void tick(ComposedVehicle vehicle);
 
     /**
      see if there is any need to change velocity

@@ -49,7 +49,17 @@ public class LongVehicle
         double guideDistance = rs.getDouble(3);
         Guide guide = Guide.get(rs.getLong(2));
 
-        for (int i = 0; i < numUnits; ++i) {
+        // lead is a full Vehicle
+        vehicles.add(new Vehicle(simulation,
+                this,
+                id * 10000,
+                guide,
+                guideDistance,
+                rs.getDouble(4),             // velocity
+                controller));
+
+        // the rest are ComposedVehicle
+        for (int i = 1; i < numUnits; ++i) {
             vehicles.add(new ComposedVehicle(simulation, this,
                     id * 10000 + i,
                     guide,
@@ -80,7 +90,8 @@ public class LongVehicle
     }
 
     public Vehicle getLeadVehicle() {
-        return vehicles.get(0);
+        assert vehicles.get(0) instanceof Vehicle;
+        return (Vehicle) vehicles.get(0);
     }
 
 

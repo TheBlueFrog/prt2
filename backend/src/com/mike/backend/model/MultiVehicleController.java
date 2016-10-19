@@ -1,5 +1,6 @@
 package com.mike.backend.model;
 
+import com.mike.backend.ComposedVehicle;
 import com.mike.backend.Constants;
 import com.mike.backend.LongVehicle;
 
@@ -16,12 +17,12 @@ public class MultiVehicleController extends AbstractVehicleController {
         this.mv = mv;
     }
 
-    public void tick(Vehicle vehicle) {
+    public void tick(ComposedVehicle vehicle) {
 
         double velocityMPS;
-        if (mv.isLeadVehicle(vehicle)) {
+        if (vehicle instanceof Vehicle) {
 
-            adjustVelocity(vehicle);
+            adjustVelocity((Vehicle) vehicle);
 
             velocityMPS = vehicle.getVelocity();
         }
@@ -40,15 +41,29 @@ public class MultiVehicleController extends AbstractVehicleController {
         if (newDistance < 1.0) {
             vehicle.setGuideDistance(newDistance);
         } else {
-            // end of the current guide figure out what to do now...
-            Guide cur = vehicle.getGuide();
-            List<Guide> next = cur.getNextGuides();
-            if (next.size() > 0) {
-                // if choice pick at random
-                int i = Constants.random.nextInt(next.size());
-                vehicle.setGuide(next.get(i));
-            } else {
-                vehicle.setVelocity(0.0);
+            if (vehicle instanceof Vehicle) {
+                // end of the current guide figure out what to do now...
+                Guide cur = vehicle.getGuide();
+                List<Guide> next = cur.getNextGuides();
+                if (next.size() > 0) {
+                    // if choice pick at random
+                    int i = Constants.random.nextInt(next.size());
+                    vehicle.setGuide(next.get(i));
+                }
+                else {
+                    vehicle.setVelocity(0.0);
+                }
+            }
+            else {
+                // end of the current guide follow the
+                // guy leading this chain of ComposedVehicle
+
+                // @ToDo // FIXME: 10/18/2016
+                // hmm, this will break if the chain is longer
+                // than a guide..
+
+                Vehicle leadVehicle = mv.getLeadVehicle();
+                vehicle.setGuide(leadVehicle.getGuide());
             }
         }
     }

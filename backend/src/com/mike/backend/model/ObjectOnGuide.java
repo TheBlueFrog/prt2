@@ -65,7 +65,9 @@ public abstract class ObjectOnGuide extends PhysicalObject {
     private double closestM = Double.POSITIVE_INFINITY;
 
 
-    public ObjectOnGuide(Node parent, long id, Guide guide,
+    public ObjectOnGuide(Node parent,
+                         long id,
+                         Guide guide,
                          double guideDistance,
                          double velocity) {
         super(parent, id);
@@ -161,6 +163,11 @@ public abstract class ObjectOnGuide extends PhysicalObject {
     public double getDistanceToClosestVehicle() {
         return closestM;
     }
+
+    public double distance(Location location) {
+        return getLocation().distance(location);
+    }
+
 
     public ObjectOnGuide getClosestVehicle() {
         return closestV;

@@ -1,5 +1,6 @@
 package com.mike.backend.model;
 
+import com.mike.backend.ComposedVehicle;
 import com.mike.backend.Simulation;
 import com.mike.backend.db.Node;
 import com.mike.util.Location;
@@ -20,11 +21,7 @@ import java.sql.SQLException;
  */
 
 public class Vehicle
-        extends ObjectOnGuide {
-
-    private AbstractVehicleController controller;
-
-    private boolean slowing = false;
+        extends ComposedVehicle {
 
     /**
      create from database record
@@ -41,12 +38,13 @@ public class Vehicle
      @throws SQLException
      */
     public Vehicle(Simulation simulation, Node parent, ResultSet rs) throws SQLException {
-        super(parent, rs.getLong(1),
+        super(simulation,
+                parent,
+                rs.getLong(1),
                 Guide.get(rs.getLong(2)),
                 rs.getDouble((3)),
-                rs.getDouble(4));
-
-        this.controller = new VehicleController(); //rs.getString(6);
+                rs.getDouble(4),
+                new VehicleController());
     }
 
     public Vehicle(Simulation simulation, Node parent,
@@ -55,12 +53,13 @@ public class Vehicle
                    double guideDistance,
                    double velocity,
                    AbstractVehicleController controller) throws SQLException {
-        super(parent, id,
+        super(simulation,
+                parent,
+                id,
                 guide,
                 guideDistance,
-                velocity);
-
-        this.controller = controller;
+                velocity,
+                controller);
     }
 
 
@@ -74,25 +73,6 @@ public class Vehicle
         return String.format("{%s: on %s, %.2f}", getTag(), guide.toString(), guideDistance);
     }
 
-
-    public double distance(Location location) {
-        return getLocation().distance(location);
-    }
-
-    /**
-     move vehicle one tick
-     */
-    @Override
-    public void ticker () {
-        clear();
-        controller.tick(this);
-    }
-
-    @Override
-    public void clear () {
-        slowing = false;
-    }
-
     public void slowDown() {
         this.slowing = true;
         this.velocity *= 0.9;
@@ -101,6 +81,10 @@ public class Vehicle
     public void adjustVelocityUpTowardsLimit() {
         this.slowing = false;
         this.velocity = Math.min(guide.getMaxVelocity(), velocity * 1.05);
+    }
+
+    public Color getColor(ObjectOnGuide vehicle) {
+        return ((Vehicle) vehicle).slowing ? Color.red : Color.blue;
     }
 
     public String getLabel(ObjectOnGuide oog) {
@@ -114,7 +98,4 @@ public class Vehicle
             return String.format("%d", vehicle.id);
     }
 
-    public Color getColor(ObjectOnGuide vehicle) {
-        return ((Vehicle) vehicle).slowing ? Color.red : Color.blue;
-    }
 }
