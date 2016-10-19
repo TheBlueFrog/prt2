@@ -21,6 +21,8 @@ import java.sql.SQLException;
 public class Vehicle
         extends Trailer {
 
+    protected boolean slowing = false;
+
     /**
      create from database record
 
@@ -42,6 +44,7 @@ public class Vehicle
                 Guide.get(rs.getLong(2)),
                 rs.getDouble((3)),
                 rs.getDouble(4),
+                rs.getDouble(5),
                 new VehicleController());
     }
 
@@ -50,6 +53,7 @@ public class Vehicle
                    Guide guide,
                    double guideDistance,
                    double velocity,
+                   double maxVelocity,
                    AbstractVehicleController controller) throws SQLException {
         super(simulation,
                 parent,
@@ -57,6 +61,7 @@ public class Vehicle
                 guide,
                 guideDistance,
                 velocity,
+                maxVelocity,
                 controller);
     }
 
@@ -81,9 +86,15 @@ public class Vehicle
         this.velocity *= 0.9;
     }
 
-    public void adjustVelocityUpTowardsLimit() {
+    @Override
+    public void clear () {
+        slowing = false;
+    }
+
+    public void accelerate() {
         this.slowing = false;
-        this.velocity = Math.min(guide.getMaxVelocity(), velocity * 1.05);
+        this.velocity = Math.min(Math.min(guide.getMaxVelocity(), this.maxVelocity),
+                            velocity * 1.05);
     }
 
     public String getLabel(ObjectOnGuide oog) {

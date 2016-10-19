@@ -35,7 +35,7 @@ public class CompositeVehicle
         return (id >= 10000);
     }
 
-    protected int numUnits;
+    protected double length;
     protected List<Trailer> vehicles = new ArrayList<>();
 
 
@@ -45,7 +45,7 @@ public class CompositeVehicle
 
         controller = new CompositeVehicleController(this);
 
-        numUnits = rs.getInt(5);
+        length = rs.getInt(6);
 
         double guideDistance = rs.getDouble(3);
         Guide guide = Guide.get(rs.getLong(2));
@@ -56,16 +56,20 @@ public class CompositeVehicle
                 id * 10000,
                 guide,
                 guideDistance,
-                rs.getDouble(4),             // velocity
+                rs.getDouble(4),                // velocity
+                rs.getDouble(5),                // maxVelocity
                 controller));
 
-        // the rest are Trailer
-        for (int i = 1; i < numUnits; ++i) {
+        // the rest are Trailers
+        int k = 1;
+        double i = Trailer.Length;
+        while (i < length) {
             vehicles.add(new Trailer(simulation, this,
-                    id * 10000 + i,
+                    id * 10000 + k++,
                     guide,
                     guideDistance,
-                    rs.getDouble(4),             // velocity
+                    rs.getDouble(4),            // velocity
+                    rs.getDouble(5),            // maxVelocity
                     controller));
 
             // each unit is back down the guide by 2 meters
@@ -73,6 +77,8 @@ public class CompositeVehicle
             double curDistanceM = guideDistance * guide.getLength();
             curDistanceM -= 2;
             guideDistance = curDistanceM / guide.getLength();
+
+            i += Trailer.Length;
         }
 
         knownMultiVehicles.put(id, this);

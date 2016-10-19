@@ -14,11 +14,15 @@ import java.sql.SQLException;
  */
 public class Trailer extends ObjectOnGuide {
 
+    // trailers are all this long (m), a longer vehicle will
+    // have enough trailes to make up the desired length.
+
+    public static double Length = 3.0;
+
     @Override
     public String getTag() { return Trailer.class.getSimpleName(); }
 
     protected AbstractVehicleController controller;
-    protected boolean slowing = false;
 
     public Trailer(Simulation simulation,
                    Node parent,
@@ -26,12 +30,14 @@ public class Trailer extends ObjectOnGuide {
                    Guide guide,
                    double guideDistance,
                    double velocity,
+                   double maxVelocity,
                    AbstractVehicleController controller) throws SQLException {
         super(parent,
-            id,
-            guide,
-            guideDistance,
-            velocity);
+                id,
+                guide,
+                guideDistance,
+                velocity,
+                maxVelocity);
 
         this.controller = controller;
     }
@@ -70,7 +76,6 @@ public class Trailer extends ObjectOnGuide {
 
     @Override
     public void clear () {
-        slowing = false;
     }
 
     @Override

@@ -127,10 +127,10 @@ public class Simulation extends Agent {
             DB.getDB().getVehicles (new DB.constructfromDB1() {
                 @Override
                 public void construct(ResultSet rs) throws SQLException {
-                    if (rs.getInt(5) == 1)
-                        new Vehicle(Simulation.this, getRoot(), rs);
-                    else
+                    if (rs.getInt(6) > Trailer.Length)
                         new CompositeVehicle(Simulation.this, getRoot(), rs);
+                    else
+                        new Vehicle(Simulation.this, getRoot(), rs);
                 }
             });
 //            for (DBMessage m : v)

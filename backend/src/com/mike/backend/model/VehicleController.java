@@ -58,7 +58,7 @@ public class VehicleController extends AbstractVehicleController {
             vehicle.slowDown();
         }
         else {
-            vehicle.adjustVelocityUpTowardsLimit ();
+            vehicle.accelerate();
         }
 
 
@@ -71,7 +71,7 @@ public class VehicleController extends AbstractVehicleController {
      @return
      */
     public boolean tooCloseForVelocity(double distance, double velocity) {
-        return distance < (velocity * 5.0);
+        return distance < (velocity * 3.0);
     }
 
 }

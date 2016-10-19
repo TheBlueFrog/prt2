@@ -74,7 +74,7 @@ public class CompositeVehicleController extends AbstractVehicleController {
             if (tooCloseForVelocity(closestVehicleM, vehicle.getVelocity())) {
                 vehicle.slowDown();
             } else {
-                vehicle.adjustVelocityUpTowardsLimit();
+                vehicle.accelerate();
             }
         }
     }

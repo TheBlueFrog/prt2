@@ -11,7 +11,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.mike.backend.model.PhysicalPoint.TAG;
 
 /**
  Created by mike on 10/18/2016.
@@ -44,6 +43,10 @@ public abstract class ObjectOnGuide extends PhysicalObject {
         }
     }
 
+    @Override
+    public String getTag () { return ObjectOnGuide.class.getSimpleName(); }
+
+
     /**
      move vehicle one tick
      */
@@ -56,6 +59,7 @@ public abstract class ObjectOnGuide extends PhysicalObject {
     protected Guide guide;
     protected double guideDistance;
     protected double velocity; // in the direction it is heading
+    protected double maxVelocity;
 
     /*
     we care about the closest object we could run into, some
@@ -69,12 +73,14 @@ public abstract class ObjectOnGuide extends PhysicalObject {
                          long id,
                          Guide guide,
                          double guideDistance,
-                         double velocity) {
+                         double velocity,
+                         double maxVelocity) {
         super(parent, id);
 
         this.guide = guide;
         this.guideDistance = guideDistance;
         this.velocity = velocity;
+        this.maxVelocity = maxVelocity;
 
         knownVehicles.put(id, this);
     }
@@ -148,7 +154,7 @@ public abstract class ObjectOnGuide extends PhysicalObject {
             }
 
         if (closestM < 3.0) {
-            Log.d(TAG, String.format("Vehicle %d too close to %d, distance %.1f",
+            Log.d(getTag(), String.format("Vehicle %d too close to %d, distance %.1f",
                     getID(),
                     closestV.getID(),
                     closestM));
