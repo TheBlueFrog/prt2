@@ -1,9 +1,7 @@
 package com.mike.backend.model;
 
-import com.mike.backend.ComposedVehicle;
 import com.mike.backend.Simulation;
 import com.mike.backend.db.Node;
-import com.mike.util.Location;
 
 import java.awt.*;
 import java.sql.ResultSet;
@@ -17,11 +15,11 @@ import java.sql.SQLException;
 
  heading, velocity and fixed length of 2 meters
 
- bigger vehicles are a chain a basic vehicles, see LongVehicle class
+ bigger vehicles are a chain a basic vehicles, see CompositeVehicle class
  */
 
 public class Vehicle
-        extends ComposedVehicle {
+        extends Trailer {
 
     /**
      create from database record
@@ -73,6 +71,11 @@ public class Vehicle
         return String.format("{%s: on %s, %.2f}", getTag(), guide.toString(), guideDistance);
     }
 
+    @Override
+    public Color getColor(ObjectOnGuide v) {
+        return slowing ? Color.red : Color.blue;
+    }
+
     public void slowDown() {
         this.slowing = true;
         this.velocity *= 0.9;
@@ -81,10 +84,6 @@ public class Vehicle
     public void adjustVelocityUpTowardsLimit() {
         this.slowing = false;
         this.velocity = Math.min(guide.getMaxVelocity(), velocity * 1.05);
-    }
-
-    public Color getColor(ObjectOnGuide vehicle) {
-        return ((Vehicle) vehicle).slowing ? Color.red : Color.blue;
     }
 
     public String getLabel(ObjectOnGuide oog) {

@@ -1,23 +1,21 @@
 package com.mike.backend.model;
 
-import com.mike.backend.ComposedVehicle;
 import com.mike.backend.Constants;
-import com.mike.backend.LongVehicle;
 
 import java.util.List;
 
 /**
  Created by mike on 10/14/2016.
  */
-public class MultiVehicleController extends AbstractVehicleController {
+public class CompositeVehicleController extends AbstractVehicleController {
 
-    private final LongVehicle mv;
+    private final CompositeVehicle mv;
 
-    public MultiVehicleController (LongVehicle mv) {
+    public CompositeVehicleController(CompositeVehicle mv) {
         this.mv = mv;
     }
 
-    public void tick(ComposedVehicle vehicle) {
+    public void tick(Trailer vehicle) {
 
         double velocityMPS;
         if (vehicle instanceof Vehicle) {
@@ -56,7 +54,7 @@ public class MultiVehicleController extends AbstractVehicleController {
             }
             else {
                 // end of the current guide follow the
-                // guy leading this chain of ComposedVehicle
+                // guy leading this chain of Trailer
 
                 // @ToDo // FIXME: 10/18/2016
                 // hmm, this will break if the chain is longer

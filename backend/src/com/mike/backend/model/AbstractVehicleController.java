@@ -1,10 +1,5 @@
 package com.mike.backend.model;
 
-import com.mike.backend.ComposedVehicle;
-import com.mike.backend.Constants;
-
-import java.util.List;
-
 /**
  Created by mike on 10/14/2016.
  */
@@ -13,7 +8,7 @@ abstract public class AbstractVehicleController {
     /**
     called once per simulation clock tick
      */
-    abstract public void tick(ComposedVehicle vehicle);
+    abstract public void tick(Trailer vehicle);
 
     /**
      see if there is any need to change velocity

@@ -1,8 +1,9 @@
-package com.mike.backend;
+package com.mike.backend.model;
 
+import com.mike.backend.Simulation;
 import com.mike.backend.db.Node;
-import com.mike.backend.model.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,20 +14,20 @@ import java.util.Map;
 /**
  Created by mike on 10/17/2016.
 
- a LongVehicle is a collection of Vehicles operated as a
+ a CompositeVehicle is a collection of Vehicles/Trailers operated as a
  single unit
  */
-public class LongVehicle
+public class CompositeVehicle
         extends PhysicalObject
 {
-    static private Map<Long, LongVehicle> knownMultiVehicles = new HashMap<>();
-    private MultiVehicleController controller;
+    static private Map<Long, CompositeVehicle> knownMultiVehicles = new HashMap<>();
+    private CompositeVehicleController controller;
 
-    static public Map<Long, LongVehicle> getKnownMultiVehicles() {
+    static public Map<Long, CompositeVehicle> getKnownMultiVehicles() {
         return knownMultiVehicles;
     }
 
-    public static LongVehicle get(long id) {
+    public static CompositeVehicle get(long id) {
         return knownMultiVehicles.get(id);
     }
 
@@ -35,14 +36,14 @@ public class LongVehicle
     }
 
     protected int numUnits;
-    protected List<ComposedVehicle> vehicles = new ArrayList<>();
+    protected List<Trailer> vehicles = new ArrayList<>();
 
 
-    public LongVehicle(Simulation simulation, Node parent, ResultSet rs) throws SQLException {
+    public CompositeVehicle(Simulation simulation, Node parent, ResultSet rs) throws SQLException {
 
         super(parent, rs.getLong(1));
 
-        controller = new MultiVehicleController(this);
+        controller = new CompositeVehicleController(this);
 
         numUnits = rs.getInt(5);
 
@@ -58,9 +59,9 @@ public class LongVehicle
                 rs.getDouble(4),             // velocity
                 controller));
 
-        // the rest are ComposedVehicle
+        // the rest are Trailer
         for (int i = 1; i < numUnits; ++i) {
-            vehicles.add(new ComposedVehicle(simulation, this,
+            vehicles.add(new Trailer(simulation, this,
                     id * 10000 + i,
                     guide,
                     guideDistance,
@@ -78,7 +79,7 @@ public class LongVehicle
     }
 
     @Override
-    public String getTag() { return LongVehicle.class.getSimpleName(); }
+    public String getTag() { return CompositeVehicle.class.getSimpleName(); }
 
     @Override
     public String toString() {
@@ -94,6 +95,7 @@ public class LongVehicle
         return (Vehicle) vehicles.get(0);
     }
 
-
-
+    public Color getColor() {
+        return getLeadVehicle().getColor(null);
+    }
 }

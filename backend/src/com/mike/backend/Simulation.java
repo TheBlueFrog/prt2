@@ -6,10 +6,7 @@ import com.mike.agents.Framework;
 import com.mike.agents.Message;
 import com.mike.backend.db.DB;
 import com.mike.backend.db.RootNode;
-import com.mike.backend.model.Guide;
-import com.mike.backend.model.ObjectOnGuide;
-import com.mike.backend.model.PhysicalPoint;
-import com.mike.backend.model.Vehicle;
+import com.mike.backend.model.*;
 
 import java.awt.*;
 import java.sql.ResultSet;
@@ -133,7 +130,7 @@ public class Simulation extends Agent {
                     if (rs.getInt(5) == 1)
                         new Vehicle(Simulation.this, getRoot(), rs);
                     else
-                        new LongVehicle(Simulation.this, getRoot(), rs);
+                        new CompositeVehicle(Simulation.this, getRoot(), rs);
                 }
             });
 //            for (DBMessage m : v)

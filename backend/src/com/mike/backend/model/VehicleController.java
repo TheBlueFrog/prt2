@@ -1,6 +1,5 @@
 package com.mike.backend.model;
 
-import com.mike.backend.ComposedVehicle;
 import com.mike.backend.Constants;
 
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.List;
  */
 public class VehicleController extends AbstractVehicleController {
 
-    public void tick(ComposedVehicle vehicle) {
+    public void tick(Trailer vehicle) {
 
         assert vehicle instanceof Vehicle;
         _tick((Vehicle) vehicle);
