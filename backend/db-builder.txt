@@ -21,15 +21,15 @@ INSERT INTO "PhysicalPoints" VALUES(null,  -10, -450);
 INSERT INTO "PhysicalPoints" VALUES(null,   10, -450);
 INSERT INTO "PhysicalPoints" VALUES(null,  450, -450);
 
-INSERT INTO "PhysicalPoints" VALUES(null, -450,  -125);
-INSERT INTO "PhysicalPoints" VALUES(null,  -10,  -125);
-INSERT INTO "PhysicalPoints" VALUES(null,   10,  -125);
-INSERT INTO "PhysicalPoints" VALUES(null,  450,  -125);
+INSERT INTO "PhysicalPoints" VALUES(null, -450,   -10);
+INSERT INTO "PhysicalPoints" VALUES(null,  -10,   -10);
+INSERT INTO "PhysicalPoints" VALUES(null,   10,   -10);
+INSERT INTO "PhysicalPoints" VALUES(null,  450,   -10);
 
-INSERT INTO "PhysicalPoints" VALUES(null, -450,   125);
-INSERT INTO "PhysicalPoints" VALUES(null,  -10,   125);
-INSERT INTO "PhysicalPoints" VALUES(null,   10,   125);
-INSERT INTO "PhysicalPoints" VALUES(null,  450,   125);
+INSERT INTO "PhysicalPoints" VALUES(null, -450,    10);
+INSERT INTO "PhysicalPoints" VALUES(null,  -10,    10);
+INSERT INTO "PhysicalPoints" VALUES(null,   10,    10);
+INSERT INTO "PhysicalPoints" VALUES(null,  450,    10);
 
 INSERT INTO "PhysicalPoints" VALUES(null, -450,  450);
 INSERT INTO "PhysicalPoints" VALUES(null,  -10,  450);
@@ -43,24 +43,16 @@ CREATE TABLE Guides (
     FromPhysicalPointID INTEGER,
     ToPhysicalPointID INTEGER
     );
-INSERT INTO "Guides" VALUES(null,  1, 5);
 INSERT INTO "Guides" VALUES(null,  5, 6);
 INSERT INTO "Guides" VALUES(null,  6, 2);
-INSERT INTO "Guides" VALUES(null,  2, 1);
 
 INSERT INTO "Guides" VALUES(null,  3, 7);
 INSERT INTO "Guides" VALUES(null,  7, 8);
-INSERT INTO "Guides" VALUES(null,  8, 4);
-INSERT INTO "Guides" VALUES(null,  4, 3);
 
-INSERT INTO "Guides" VALUES(null,   9, 13);
-INSERT INTO "Guides" VALUES(null,  13, 14);
 INSERT INTO "Guides" VALUES(null,  14, 10);
 INSERT INTO "Guides" VALUES(null,  10,  9);
 
 INSERT INTO "Guides" VALUES(null,  11, 15);
-INSERT INTO "Guides" VALUES(null,  15, 16);
-INSERT INTO "Guides" VALUES(null,  16, 12);
 INSERT INTO "Guides" VALUES(null,  12, 11);
 
 INSERT INTO "Guides" VALUES(null,  10,  6);
@@ -68,7 +60,20 @@ INSERT INTO "Guides" VALUES(null,   6,  7);
 INSERT INTO "Guides" VALUES(null,   7, 11);
 INSERT INTO "Guides" VALUES(null,  11, 10);
 
+
+/*
+INSERT INTO "Guides" VALUES(null,  2, 1);
+INSERT INTO "Guides" VALUES(null,  8, 4);
+INSERT INTO "Guides" VALUES(null,  4, 3);
+INSERT INTO "Guides" VALUES(null,  1, 5);
+INSERT INTO "Guides" VALUES(null,  15, 16);
+INSERT INTO "Guides" VALUES(null,  16, 12);
+INSERT INTO "Guides" VALUES(null,   9, 13);
+INSERT INTO "Guides" VALUES(null,  13, 14);
 INSERT INTO "Guides" VALUES(null,  12,  8);
+*/
+
+
 
 /* vehicles come in modules, anything longer than Trailer.Length (3) meters is
  * composed of Trailer.Length pieces until it meets the given length
@@ -85,9 +90,9 @@ INSERT INTO "Vehicles" VALUES(null,   1, 0.0, 10.1, 15.0,  3);
 INSERT INTO "Vehicles" VALUES(null,  11, 0.0, 13.0, 15.0,  3);
 INSERT INTO "Vehicles" VALUES(null,   6, 0.0,  8.4, 15.0,  3);
 INSERT INTO "Vehicles" VALUES(null,   4, 0.0,  6.0, 15.0,  3);
-INSERT INTO "Vehicles" VALUES(null,  13, 0.4,  2.2,  9.0,  20); /* truck */
-INSERT INTO "Vehicles" VALUES(null,  13, 0.0,  5.2, 15.0,  3);
-INSERT INTO "Vehicles" VALUES(null,  15, 0.0,  5.2, 15.0,  3);
+INSERT INTO "Vehicles" VALUES(null,  10, 0.4,  2.2,  6.0,  20); /* slow truck */
+INSERT INTO "Vehicles" VALUES(null,   5, 0.0,  5.2, 15.0,  3);
+INSERT INTO "Vehicles" VALUES(null,   2, 0.0,  5.2, 15.0,  3);
 
 
 /*

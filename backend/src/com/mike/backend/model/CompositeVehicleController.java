@@ -1,6 +1,7 @@
 package com.mike.backend.model;
 
 import com.mike.backend.Constants;
+import com.mike.backend.agents.MyClock;
 
 import java.util.List;
 
@@ -8,6 +9,9 @@ import java.util.List;
  Created by mike on 10/14/2016.
  */
 public class CompositeVehicleController extends AbstractVehicleController {
+
+    @Override
+    public String getTag() { return CompositeVehicleController.class.getSimpleName(); }
 
     private final CompositeVehicle mv;
 
@@ -32,7 +36,7 @@ public class CompositeVehicleController extends AbstractVehicleController {
         double guideLengthM = vehicle.getGuide().getLength();
         double curDistanceM = vehicle.getGuideDistance() * guideLengthM;
 
-        curDistanceM += velocityMPS; // assuming a tick is 1 second
+        curDistanceM += (velocityMPS * (MyClock.msecondsPerSimulationTick / 1000.0));
 
         double newDistance = curDistanceM / guideLengthM;
 
@@ -42,15 +46,8 @@ public class CompositeVehicleController extends AbstractVehicleController {
             if (vehicle instanceof Vehicle) {
                 // end of the current guide figure out what to do now...
                 Guide cur = vehicle.getGuide();
-                List<Guide> next = cur.getNextGuides();
-                if (next.size() > 0) {
-                    // if choice pick at random
-                    int i = Constants.random.nextInt(next.size());
-                    vehicle.setGuide(next.get(i));
-                }
-                else {
-                    vehicle.setVelocity(0.0);
-                }
+                Guide guide = Guide.getRandom();
+                vehicle.setGuide(guide);
             }
             else {
                 // end of the current guide follow the

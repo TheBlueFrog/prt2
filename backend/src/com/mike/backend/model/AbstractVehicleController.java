@@ -5,6 +5,8 @@ package com.mike.backend.model;
  */
 abstract public class AbstractVehicleController {
 
+    abstract public String getTag();
+
     /**
     called once per simulation clock tick
      */

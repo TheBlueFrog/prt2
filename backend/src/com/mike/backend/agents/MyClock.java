@@ -10,7 +10,8 @@ import com.mike.backend.Main;
  Created by mike on 10/11/2016. */
 public class MyClock extends Clock {
 
-    private long secondsPerSimulationTick = 1;
+    static public long msecondsPerSimulationTick = 100;
+
     private boolean animation = false;
 
     public MyClock(Framework f, Integer serialNumber) {
@@ -22,7 +23,7 @@ public class MyClock extends Clock {
     protected void handleTick() {
         // just talking to myself
 
-        time += secondsPerSimulationTick; // each tick moves simulation clock this many seconds
+        time += msecondsPerSimulationTick; // each tick moves simulation clock this many milliseconds
 
         for (Agent a : subscribers)
             send(new Message(this, a.getClass(), a.getSerialNumber(), (Long) time));

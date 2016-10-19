@@ -21,7 +21,7 @@ abstract public class Clock extends Agent {
 
     static private final String TAG = Clock.class.getSimpleName();
 
-    // the time, in seconds since midnight of the first day of
+    // the time, in milliseconds since midnight of the first day of
     // the run
     protected static long time = 0;
 
@@ -30,19 +30,19 @@ abstract public class Clock extends Agent {
     /**
      * @return current time of day (in seconds), days are all exactly 24hrs long
      */
-    static public long getTimeOfDay() { return getTimeOfDay(time); }
+//    static public long getTimeOfDay() { return getTimeOfDay(time); }
     static public long getTimeOfDay(long t) {
-        return t % (60 * 60 * 24);
+        return t % (1000 * 60 * 60 * 24);
     }
 
     /**
      * @return current time=of=day (in minutes), see getTimeOfDay
      */
-    public static int getTimeOfDayInMinutes() { return getTimeOfDayInMinutes(time); }
-    public static int getTimeOfDayInMinutes(long t) { return (int) (getTimeOfDay(t) / 60); }
+//    public static int getTimeOfDayInMinutes() { return getTimeOfDayInMinutes(time); }
+//    public static int getTimeOfDayInMinutes(long t) { return (int) (getTimeOfDay(t) / 60); }
 
     public static int getHourOfDay() { return getHourOfDay(time); }
-    public static int getHourOfDay(long t) { return (int) (getTimeOfDay(t) / (60 * 60)); }
+    public static int getHourOfDay(long t) { return (int) (getTimeOfDay(t) / (1000 * 60 * 60)); }
 
     public static int getMinuteOfHour()
     {
@@ -50,29 +50,29 @@ abstract public class Clock extends Agent {
     }
     public static int getMinuteOfHour(long t)
     {
-        return (int) ((getTimeOfDay(t) / 60) - (getHourOfDay(t) * 60));
+        return (int) ((getTimeOfDay(t) / (1000 * 60)) - (getHourOfDay(t) * 60));
     }
 
     /**
      * @return current day-of-week, all weeks are exactly 7 days long
      */
-    static public long getDayOfWeek() {
-        return getDayOfWeek(time);
-    }
-    static public long getDayOfWeek(long t) { return getDay(t) % 7; }
+//    static public long getDayOfWeek() {
+//        return getDayOfWeek(time);
+//    }
+//    static public long getDayOfWeek(long t) { return getDay(t) % 7; }
 
     /*
     current day-of-month, all months are exactly 28 days long (makes life simple)
      */
-    static public long getDayOfMonth() {
-        return getDayOfMonth(time);
-    }
-    static public long getDayOfMonth(long t) { return (getDay(t) % 28); }
+//    static public long getDayOfMonth() {
+//        return getDayOfMonth(time);
+//    }
+//    static public long getDayOfMonth(long t) { return (getDay(t) % 28); }
 
     // current day since start of run
     static public long getDay() { return getDay(time); }
     static public long getDay(long t) {
-        return (t / (60 * 60 * 24));
+        return (t / (1000 * 60 * 60 * 24));
     }
 
 
@@ -155,19 +155,19 @@ abstract public class Clock extends Agent {
 
     protected abstract void handleTick();
 
-    public static String formatAsHM(long t) {
-        int hr = (int) (t / (60 * 60));
-        int mn = (int) ((t / 60) - (hr * 60));
-        return String.format("%02d:%02d", hr, mn);
-    }
+//    public static String formatAsHM(long t) {
+//        int hr = (int) (t / (60 * 60));
+//        int mn = (int) ((t / 60) - (hr * 60));
+//        return String.format("%02d:%02d", hr, mn);
+//    }
 
     /**
      * @return time-of-day as a real number, e.g. noon is 12.00, 18:15 as 18.25
      */
-    public static double getTimeOfDayDouble() {
-        return getTimeOfDayDouble(time);
-    }
-    public static double getTimeOfDayDouble(long t) {
-        return (double) t / (double) (60 * 60);
-    }
+//    public static double getTimeOfDayDouble() {
+//        return getTimeOfDayDouble(time);
+//    }
+//    public static double getTimeOfDayDouble(long t) {
+//        return (double) t / (double) (60 * 60);
+//    }
 }
