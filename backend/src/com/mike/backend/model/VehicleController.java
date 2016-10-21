@@ -13,6 +13,9 @@ public class VehicleController extends AbstractVehicleController {
 
     public String getTag () { return VehicleController.class.getSimpleName(); }
 
+    public VehicleController() {
+        super ();
+    }
     public void tick(Trailer vehicle) {
 
         assert vehicle instanceof Vehicle;
@@ -37,9 +40,18 @@ public class VehicleController extends AbstractVehicleController {
             vehicle.setGuideDistance(newDistance);
         }
         else {
-            // end of the current guide figure out what to do now...
-            Guide guide = Guide.getRandom();
-            vehicle.setGuide(guide);
+            vehicle.atEndOfGuide(this);
+//            // at end of guide, see if it has a single outgoing connection
+//            Guide cur = vehicle.getGuide();
+//            List<Guide> outgoing = cur.getOutgoing();
+//            if (outgoing.size() == 1) {
+//                // take it
+//                vehicle.setGuide(outgoing.get(0));
+//            } else {
+//                // figure out what to do now...
+//                Guide guide = Guide.getRandom();
+//                vehicle.setGuide(guide);
+//            }
         }
     }
 
@@ -68,6 +80,16 @@ public class VehicleController extends AbstractVehicleController {
      */
     public boolean tooCloseForVelocity(double distance, double velocity) {
         return distance < (velocity * 3.0);
+    }
+
+    @Override
+    public Trailer getLeadVehicle() {
+        return trailer;
+    }
+
+    @Override
+    void dispose() {
+
     }
 
 }

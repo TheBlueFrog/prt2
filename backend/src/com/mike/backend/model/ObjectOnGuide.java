@@ -5,11 +5,13 @@ import com.mike.backend.db.Node;
 import com.mike.util.Location;
 import com.mike.util.Log;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -20,17 +22,19 @@ import java.util.Map;
  */
 public abstract class ObjectOnGuide extends PhysicalObject {
 
-    private static boolean showLabels = true;
-    public static boolean getShowLabels() { return showLabels; }
-    public static void setShowLabels(boolean show) { showLabels = show; }
+    static private boolean showLabels = true;
+    static public boolean getShowLabels() { return showLabels; }
+    static public void setShowLabels(boolean show) { showLabels = show; }
 
     static private Map<Long, ObjectOnGuide> knownVehicles = new HashMap<>();
     static public Map<Long, ObjectOnGuide> getKnownVehicles() {
         return knownVehicles;
     }
-    public static ObjectOnGuide get(long id) {
+    static public ObjectOnGuide get(long id) {
         return knownVehicles.get(id);
     }
+
+    static public void remove(long id) { knownVehicles.remove(id); }
 
     /**
      each time the simulation clock ticks this will be invoked,
@@ -39,9 +43,16 @@ public abstract class ObjectOnGuide extends PhysicalObject {
     static public void tick() {
         for (long id : knownVehicles.keySet()) {
             ObjectOnGuide vehicle = ObjectOnGuide.get(id);
-            vehicle.ticker();
+            if ( ! removedObjects.contains(vehicle.getID()))
+                vehicle.ticker();
         }
+
+        for (long id : removedObjects)
+            remove(id);
+        removedObjects.clear();
     }
+
+    static private List<Long> removedObjects = new ArrayList<Long>();
 
     @Override
     public String getTag () { return ObjectOnGuide.class.getSimpleName(); }
@@ -243,4 +254,17 @@ public abstract class ObjectOnGuide extends PhysicalObject {
         g2d.setTransform(saveTransform);
     }
 
+    /**
+     * the vehicle has reached the end of the guide it's on, what
+     * to do now?  Follow our route to the end.
+     * @param vc
+     */
+    public abstract void atEndOfGuide(AbstractVehicleController vc);
+
+    /**
+     * this is no longer needed, dispose of it
+     */
+    public void dispose() {
+        removedObjects.add(id);
+    }
 }

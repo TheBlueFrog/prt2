@@ -70,7 +70,8 @@ public class Simulation extends Agent {
 
         loadPhysicalPoints();
         loadGuides();
-        loadVehicles();
+
+        createVehicles();
 
         connectGuides();
 
@@ -122,23 +123,51 @@ public class Simulation extends Agent {
         }
     }
 
-    private void loadVehicles() {
-        try {
-            DB.getDB().getVehicles (new DB.constructfromDB1() {
-                @Override
-                public void construct(ResultSet rs) throws SQLException {
-                    if (rs.getInt(6) > Trailer.Length)
-                        new CompositeVehicle(Simulation.this, getRoot(), rs);
-                    else
-                        new Vehicle(Simulation.this, getRoot(), rs);
-                }
-            });
-//            for (DBMessage m : v)
-//                addToNetwork(m);
+    private void createVehicles() {
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        for (int i = 1; i < Guide.getKnownGuides().size()-1; ++i) {
+
+            Guide guide = Guide.get(i);
+            if (i == 5) {
+                CompositeVehicle vehicle = new CompositeVehicle(Simulation.this, getRoot(),
+                        i,
+                        Constants.random.nextDouble(),
+                        Constants.random.nextDouble() * 10.0,
+                        10.0,
+                        30.0,
+                        new Route(Simulation.this, guide));
+            }
+            else {
+                Vehicle vehicle = new Vehicle(Simulation.this, getRoot(),
+                        i,
+                        Constants.random.nextDouble(),
+                        Constants.random.nextDouble() * 14.0,
+                        14.0,
+                        new Route(Simulation.this, guide),
+                        new VehicleController());
+            }
         }
+
+//        try {
+//            DB.getDB().getVehicles (new DB.constructfromDB1() {
+//                @Override
+//                public void construct(ResultSet rs) throws SQLException {
+//                    Guide guide = Guide.get(rs.getLong(2));
+//                    if (rs.getInt(6) > Trailer.Length)
+//                        new CompositeVehicle(Simulation.this,
+//                                getRoot(),
+//                                new Route(Simulation.this, guide),
+//                                rs);
+//                    else
+//                        new Vehicle(Simulation.this, getRoot(), new Route(Simulation.this, guide), rs);
+//                }
+//            });
+////            for (DBMessage m : v)
+////                addToNetwork(m);
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
     }
 
 //    public VehicleAgent getVehicleAgent(String name) {

@@ -2,6 +2,7 @@ package com.mike.backend.model;
 
 import com.mike.backend.Simulation;
 import com.mike.backend.db.Node;
+import com.mike.backend.db.RootNode;
 
 import java.awt.*;
 import java.sql.ResultSet;
@@ -23,10 +24,12 @@ public class Vehicle
 
     protected boolean slowing = false;
 
+    protected Route route;
+
     /**
      create from database record
 
-     @param rs
+     @throws SQLException
      CREATE TABLE Vehicles (
          id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
          Guide INTEGER,
@@ -34,37 +37,39 @@ public class Vehicle
          Velocity DOUBLE,
          Length DOUBLE,
          ControllerName TEXT
-
-     @throws SQLException
      */
-    public Vehicle(Simulation simulation, Node parent, ResultSet rs) throws SQLException {
+    public Vehicle(Simulation simulation, Node parent, Route route, ResultSet rs) throws SQLException {
         super(simulation,
                 parent,
                 rs.getLong(1),
-                Guide.get(rs.getLong(2)),
+                route.getCurrentGuide(),
                 rs.getDouble((3)),
                 rs.getDouble(4),
                 rs.getDouble(5),
                 new VehicleController());
+
+//        controller.setVehicle(this);
+        this.route = route;
     }
 
     public Vehicle(Simulation simulation, Node parent,
                    long id,
-                   Guide guide,
                    double guideDistance,
                    double velocity,
                    double maxVelocity,
-                   AbstractVehicleController controller) throws SQLException {
+                   Route route,
+                   AbstractVehicleController controller)  {
         super(simulation,
                 parent,
                 id,
-                guide,
+                route.getCurrentGuide(),
                 guideDistance,
                 velocity,
                 maxVelocity,
                 controller);
-    }
 
+        this.route = route;
+    }
 
     @Override
     public String getTag() {
@@ -108,4 +113,24 @@ public class Vehicle
             return String.format("%d", vehicle.id);
     }
 
+    /**
+     * the vehicle has reached the end of the guide it's on, what
+     * to do now?  Follow our route to the end.
+     * @param vc
+     */
+    @Override
+    public void atEndOfGuide(AbstractVehicleController vc) {
+
+        Guide guide = route.nextGuide(getGuide());
+
+        if (guide == null)
+            route.end(vc);
+        else
+            setGuide(guide);
+    }
+
+    @Override
+    public void dispose () {
+        super.dispose();
+    }
 }

@@ -29,7 +29,7 @@ public class CompositeVehicleController extends AbstractVehicleController {
             velocityMPS = vehicle.getVelocity();
         }
         else {
-            velocityMPS = mv.getLeadVehicle().getVelocity();
+            velocityMPS = getLeadVehicle().getVelocity();
         }
 
         // convert velocity m/s into fraction of guide length
@@ -43,23 +43,21 @@ public class CompositeVehicleController extends AbstractVehicleController {
         if (newDistance < 1.0) {
             vehicle.setGuideDistance(newDistance);
         } else {
-            if (vehicle instanceof Vehicle) {
-                // end of the current guide figure out what to do now...
-                Guide cur = vehicle.getGuide();
-                Guide guide = Guide.getRandom();
-                vehicle.setGuide(guide);
-            }
-            else {
-                // end of the current guide follow the
-                // guy leading this chain of Trailer
+//            if (vehicle instanceof Vehicle) {
 
-                // @ToDo // FIXME: 10/18/2016
-                // hmm, this will break if the chain is longer
-                // than a guide..
-
-                Vehicle leadVehicle = mv.getLeadVehicle();
-                vehicle.setGuide(leadVehicle.getGuide());
-            }
+                vehicle.atEndOfGuide(this);
+//            }
+//            else {
+//                // end of the current guide follow the
+//                // guy leading this chain of Trailers
+//
+//                // @ToDo // FIXME: 10/18/2016
+//                // hmm, this will break if the chain is longer
+//                // than a guide..
+//
+//                Vehicle leadVehicle = mv.getLeadVehicle();
+//                vehicle.setGuide(leadVehicle.getGuide());
+//            }
         }
     }
 
@@ -78,6 +76,16 @@ public class CompositeVehicleController extends AbstractVehicleController {
 
     public boolean tooCloseForVelocity(double distance, double velocity) {
         return distance < (velocity * 5.0);
+    }
+
+    @Override
+    public Trailer getLeadVehicle() {
+        return mv.getLeadVehicle();
+    }
+
+    @Override
+    void dispose() {
+        mv.dispose();
     }
 
 }

@@ -5,6 +5,8 @@ package com.mike.backend.model;
  */
 abstract public class AbstractVehicleController {
 
+    protected Trailer trailer;
+
     abstract public String getTag();
 
     /**
@@ -24,4 +26,19 @@ abstract public class AbstractVehicleController {
      */
     abstract public boolean tooCloseForVelocity(double distance, double velocity);
 
+    /**
+     * @return the lead Vehicle of what is being controlled
+     */
+    public abstract Trailer getLeadVehicle();
+
+    public void setVehicle(Trailer trailer) {
+        this.trailer = trailer;
+    }
+
+    /**
+     * dispose of this vehicle
+     */
+    void dispose() {
+//        trailer = null;
+    }
 }

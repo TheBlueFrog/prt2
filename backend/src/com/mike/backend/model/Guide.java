@@ -102,11 +102,11 @@ public class Guide extends PhysicalObject {
         return Guide.nextGuides(to);
     }
 
-    private static List<Guide> nextGuides(PhysicalPoint to) {
+    private static List<Guide> nextGuides(PhysicalPoint physicalPoint) {
         List<Guide> v = new ArrayList<>();
         for (long id : knownGuides.keySet()) {
             Guide guide = knownGuides.get(id);
-            if (guide.from.equals(to))
+            if (guide.from.equals(physicalPoint))
                 v.add(guide);
         }
         return v;
@@ -141,5 +141,9 @@ public class Guide extends PhysicalObject {
     public static Guide getRandom() {
         int i = Constants.random.nextInt(knownGuides.size()-1)+1;
         return knownGuides.get((long) i);
+    }
+
+    public List<Guide> getOutgoing() {
+        return nextGuides(to);
     }
 }

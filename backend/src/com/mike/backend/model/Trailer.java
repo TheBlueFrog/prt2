@@ -31,7 +31,7 @@ public class Trailer extends ObjectOnGuide {
                    double guideDistance,
                    double velocity,
                    double maxVelocity,
-                   AbstractVehicleController controller) throws SQLException {
+                   AbstractVehicleController controller) {
         super(parent,
                 id,
                 guide,
@@ -40,6 +40,7 @@ public class Trailer extends ObjectOnGuide {
                 maxVelocity);
 
         this.controller = controller;
+        controller.setVehicle(this);
     }
 
     @Override
@@ -84,6 +85,24 @@ public class Trailer extends ObjectOnGuide {
                 getTag(),
                 guide.toString(),
                 guideDistance);
+    }
+
+    @Override
+    public void atEndOfGuide(AbstractVehicleController vc) {
+
+        // end of the current guide follow the
+        // guy leading this chain of Trailers
+
+        // @ToDo // FIXME: 10/18/2016
+        // hmm, this will break if the chain is longer
+        // than a guide..
+
+        setGuide(vc.getLeadVehicle().getGuide());
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
     }
 
 }
