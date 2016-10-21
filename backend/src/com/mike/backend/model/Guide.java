@@ -127,17 +127,6 @@ public class Guide extends PhysicalObject {
         return maxVelocity;
     }
 
-    /** does this connect to anther Guide?
-     */
-    public boolean connectsTo(Guide guide) {
-        if (guide == null)
-            return false;
-
-        return to.equals(guide.from) // normal next guide case
-            || ( ! from.equals(guide.from) && to.equals(guide.to)) // joining guides
-            ;
-    }
-
     public static Guide getRandom() {
         int i = Constants.random.nextInt(knownGuides.size()-1)+1;
         return knownGuides.get((long) i);

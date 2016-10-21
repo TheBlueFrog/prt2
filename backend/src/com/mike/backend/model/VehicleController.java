@@ -59,27 +59,28 @@ public class VehicleController extends AbstractVehicleController {
      see if there is any need to change velocity
      */
     public void adjustVelocity(Vehicle vehicle) {
-        vehicle.updateClosestVehicle();
-        double closestVehicleM = vehicle.getDistanceToClosestVehicle();
 
-        if (tooCloseForVelocity(closestVehicleM, vehicle.getVelocity())) {
+        vehicle.updateClosestVehicle();
+
+        if (tooCloseForVelocity(vehicle)) {
             vehicle.slowDown();
         }
         else {
             vehicle.accelerate();
         }
-
-
     }
 
     /**
      for the current velocity of the vehicle is the given distance
      too close? basically 2 seconds
-     @param distance
      @return
      */
-    public boolean tooCloseForVelocity(double distance, double velocity) {
-        return distance < (velocity * 3.0);
+    public boolean tooCloseForVelocity(Vehicle vehicle) {
+        if (vehicle.getClosestVehicle() == null)
+            return false;
+
+        double distance = vehicle.getDistanceToClosestVehicle();
+        return distance < (vehicle.getVelocity() * 3.0);
     }
 
     @Override

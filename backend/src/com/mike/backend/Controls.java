@@ -1,5 +1,6 @@
 package com.mike.backend;
 
+import com.mike.backend.agents.MyClock;
 import com.mike.backend.model.Vehicle;
 
 import java.awt.event.ActionEvent;
@@ -16,32 +17,30 @@ public class Controls extends JPanel implements ActionListener {
     protected JButton runButton, stepButton, pauseButton;
         private JFrame mFrame;
 
-        boolean running = true;
-
         public Controls() {
 
             // Create and set up the controls
-            runButton = new JButton("RUN");
+            runButton = new JButton("Run");
             runButton.setVerticalTextPosition(AbstractButton.CENTER);
             runButton.setHorizontalTextPosition(AbstractButton.LEADING); // aka LEFT, for
             // left-to-right
             // locales
             runButton.setMnemonic(KeyEvent.VK_D);
             runButton.setActionCommand("run");
-            runButton.setEnabled( ! running);
+            runButton.setEnabled( ! Main.getRunning());
 
-            stepButton = new JButton("STEP");
+            stepButton = new JButton("Step");
             stepButton.setVerticalTextPosition(AbstractButton.BOTTOM);
             stepButton.setHorizontalTextPosition(AbstractButton.CENTER);
             stepButton.setMnemonic(KeyEvent.VK_M);
             stepButton.setActionCommand("step");
-            stepButton.setEnabled( ! running);
+            stepButton.setEnabled( ! Main.getRunning());
 
-            pauseButton = new JButton("PAUSE");
+            pauseButton = new JButton("Pause");
             // Use the default text position of CENTER, TRAILING (RIGHT).
             pauseButton.setMnemonic(KeyEvent.VK_E);
             pauseButton.setActionCommand("pause");
-            pauseButton.setEnabled(running);
+            pauseButton.setEnabled(Main.getRunning());
 
             showVehicleLabel = new JToggleButton("Vehicle labels");
             //showVehicleLabel.setMnemonic(KeyEvent.VK_E);
@@ -75,21 +74,21 @@ public class Controls extends JPanel implements ActionListener {
             mFrame.pack();
             mFrame.setVisible(true);
 
-            int delay = 500; // milliseconds
-            ActionListener taskPerformer = new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-
-                    if (running) {
-
-                        Main.stepSimulation();
-                        Main.repaint();
-                    }
-                }
-            };
-
-            // stepping happens at the Agent level driven
-            // by the Clock agent
-
+//            int delay = 50; // milliseconds
+//            ActionListener taskPerformer = new ActionListener() {
+//                public void actionPerformed(ActionEvent evt) {
+//
+//                    if (running) {
+//
+//                        Main.stepSimulation();
+//                        Main.repaint();
+//                    }
+//                }
+//            };
+//
+//            // stepping happens at the Agent level driven
+//            // by the Clock agent
+//
 //            new Timer(delay, taskPerformer).start();
         }
 
@@ -98,19 +97,20 @@ public class Controls extends JPanel implements ActionListener {
                 runButton.setEnabled(true);
                 stepButton.setEnabled(true);
                 pauseButton.setEnabled(false);
-                running = false;
-            } else if ("run".equals(e.getActionCommand())) {
+                Main.setRunning(false);
+            }
+            else if ("run".equals(e.getActionCommand())) {
                 runButton.setEnabled(false);
                 stepButton.setEnabled(false);
                 pauseButton.setEnabled(true);
-                running = true;
+                Main.setRunning(true);
             }
             else if ("show-vehicle-labels".equals(e.getActionCommand())) {
                 Main.setShowVehicleLables(showVehicleLabel.isSelected());
             }
             else if ("step".equals(e.getActionCommand())) {
 //                Main.simulation.step();
-                Main.drawing.mFrame.repaint();
+                MyClock.singleStep();
             }
         }
 

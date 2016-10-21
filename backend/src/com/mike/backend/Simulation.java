@@ -7,10 +7,13 @@ import com.mike.agents.Message;
 import com.mike.backend.db.DB;
 import com.mike.backend.db.RootNode;
 import com.mike.backend.model.*;
+import com.mike.util.Log;
 
 import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.*;
+import java.util.List;
 
 /**
  Created by mike on 10/14/2016. */
@@ -60,6 +63,10 @@ public class Simulation extends Agent {
         ObjectOnGuide.tick();
 
         Main.repaint();
+
+        if (ObjectOnGuide.getKnownVehicles().size() == 0) {
+            createVehicles();
+        }
     }
 
     public RootNode getRoot() {
@@ -71,24 +78,12 @@ public class Simulation extends Agent {
         loadPhysicalPoints();
         loadGuides();
 
-        createVehicles();
-
-        connectGuides();
-
 //        Log.d(TAG, String.format("Loaded network: %d messages, %d arcs, %d WordNodes",
 //                users.getOutgoing().size(),
 //                Arc.getCount(),
 //                WordNode.getCount()));
 
         //          dump(users);
-
-    }
-
-    /**
-     now that all the guides are loaded, make connections between
-     Guide.to and Guide.from if they are the same physical
-     */
-    private void connectGuides() {
 
     }
 
@@ -125,49 +120,72 @@ public class Simulation extends Agent {
 
     private void createVehicles() {
 
-        for (int i = 1; i < Guide.getKnownGuides().size()-1; ++i) {
+        // setup four 3-guide routes
 
-            Guide guide = Guide.get(i);
+        List<List<Guide>> guides = new ArrayList<>();
+        {
+            List<Guide> g = new ArrayList<Guide>();
+            g.add(Guide.get(1));
+            g.add(Guide.get(2));
+            g.add(Guide.get(3));
+            guides.add(g);
+        }
+        {
+            List<Guide> g = new ArrayList<Guide>();
+            g.add(Guide.get(4));
+            g.add(Guide.get(5));
+            g.add(Guide.get(6));
+            guides.add(g);
+        }
+        {
+            List<Guide> g = new ArrayList<Guide>();
+            g.add(Guide.get(7));
+            g.add(Guide.get(8));
+            g.add(Guide.get(9));
+            guides.add(g);
+        }
+        {
+            List<Guide> g = new ArrayList<Guide>();
+            g.add(Guide.get(10));
+            g.add(Guide.get(11));
+            g.add(Guide.get(12));
+            guides.add(g);
+        }
+
+        int numVehicles = 10;
+        double maxVelocity = 14.0;
+        double maxTruckVelocity = 9.0;
+
+        for (int i = 1; i < numVehicles; ++i) {
+
+            // uniformly distributed across the guides
+            List<Guide> g = guides.get(Constants.random.nextInt(4));
+
             if (i == 5) {
-                CompositeVehicle vehicle = new CompositeVehicle(Simulation.this, getRoot(),
+                new CompositeVehicle(Simulation.this, getRoot(),
                         i,
-                        Constants.random.nextDouble(),
+                        Constants.random.nextDouble() / 2.0,
                         Constants.random.nextDouble() * 10.0,
-                        10.0,
+                        maxTruckVelocity,
                         30.0,
-                        new Route(Simulation.this, guide));
+                        new Route(Simulation.this, g));
             }
             else {
-                Vehicle vehicle = new Vehicle(Simulation.this, getRoot(),
+                new Vehicle(Simulation.this, getRoot(),
                         i,
-                        Constants.random.nextDouble(),
-                        Constants.random.nextDouble() * 14.0,
-                        14.0,
-                        new Route(Simulation.this, guide),
+                        Constants.random.nextDouble() / 2.0,    // uniformly somewhere in first 1/2 of first guide
+                        getVelocity(maxVelocity),   //
+                        maxVelocity,
+                        new Route(Simulation.this, g),
                         new VehicleController());
             }
         }
+    }
 
-//        try {
-//            DB.getDB().getVehicles (new DB.constructfromDB1() {
-//                @Override
-//                public void construct(ResultSet rs) throws SQLException {
-//                    Guide guide = Guide.get(rs.getLong(2));
-//                    if (rs.getInt(6) > Trailer.Length)
-//                        new CompositeVehicle(Simulation.this,
-//                                getRoot(),
-//                                new Route(Simulation.this, guide),
-//                                rs);
-//                    else
-//                        new Vehicle(Simulation.this, getRoot(), new Route(Simulation.this, guide), rs);
-//                }
-//            });
-////            for (DBMessage m : v)
-////                addToNetwork(m);
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+    private double getVelocity(double maxVelocity) {
+        return Math.max(1.0,
+                        Constants.random.nextGaussian() * (maxVelocity * 0.3)    // Gaussian around 0
+                        + (maxVelocity * 0.8));      // some a bit over, most under limit
     }
 
 //    public VehicleAgent getVehicleAgent(String name) {

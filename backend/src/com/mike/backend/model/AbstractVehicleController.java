@@ -20,11 +20,11 @@ abstract public class AbstractVehicleController {
     abstract public void adjustVelocity(Vehicle vehicle);
 
     /**
-    something is distance (m) far away is this too close for the given
-    vehicle velocity.  it has already been settled that the vehicle
+    is this too close to somebody else given the
+    vehicle's velocity.  it has already been settled that the vehicle
     could collide with the thing.
      */
-    abstract public boolean tooCloseForVelocity(double distance, double velocity);
+    abstract public boolean tooCloseForVelocity(Vehicle vehicle);
 
     /**
      * @return the lead Vehicle of what is being controlled

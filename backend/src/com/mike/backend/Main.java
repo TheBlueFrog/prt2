@@ -105,4 +105,8 @@ public class Main
 	public static void setShowVehicleLables(boolean show) {
 		Vehicle.setShowLabels (show);
 	}
+
+	private static boolean running = true;
+    public static void setRunning(boolean running) { Main.running = running; }
+	public static boolean getRunning() { return running; }
 }

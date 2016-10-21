@@ -66,7 +66,7 @@ public class CompositeVehicleController extends AbstractVehicleController {
             vehicle.updateClosestVehicle();
             double closestVehicleM = vehicle.getDistanceToClosestVehicle();
 
-            if (tooCloseForVelocity(closestVehicleM, vehicle.getVelocity())) {
+            if (tooCloseForVelocity(vehicle)) {
                 vehicle.slowDown();
             } else {
                 vehicle.accelerate();
@@ -74,8 +74,12 @@ public class CompositeVehicleController extends AbstractVehicleController {
         }
     }
 
-    public boolean tooCloseForVelocity(double distance, double velocity) {
-        return distance < (velocity * 5.0);
+    public boolean tooCloseForVelocity(Vehicle vehicle) {
+        if (vehicle.getClosestVehicle() == null)
+            return false;
+
+        double distance = vehicle.getDistanceToClosestVehicle();
+        return distance < (vehicle.getVelocity() * 3.0);
     }
 
     @Override

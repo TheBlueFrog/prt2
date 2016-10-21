@@ -196,11 +196,20 @@ public abstract class ObjectOnGuide extends PhysicalObject {
      directly to our guide we can't hit him, e.g. an opposing lane
      or a bridge
      */
-    protected boolean couldHit(ObjectOnGuide vehicle) {
-        return     (guide.equals(vehicle.getGuide())
-                && (getGuideDistance() < vehicle.getGuideDistance()))
-                || guide.connectsTo(vehicle.getGuide())
-                ;
+    protected boolean couldHit(ObjectOnGuide other) {
+        return     (
+                        guide.equals(other.getGuide())                  // on same guide and I'm behind other
+                     && (getGuideDistance() < other.getGuideDistance())
+                   )
+                ||
+                   (                                                    // on different guides but
+                        getGuide().getTo().equals(other.getGuide().getFrom()) // other guide starts from my end
+                     ||
+                        (    getGuide().getTo().equals(other.getGuide().getTo())   // other guide joins mine
+                          && ( ! guide.equals(other.getGuide()))
+                        )
+                   )
+            ;
     }
 
     public static void paint(Graphics2D g2d) {

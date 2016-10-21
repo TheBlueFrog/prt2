@@ -14,15 +14,13 @@ public class Route {
     private int current;
 
     /**
-     * buld a new route for a vehicle
+     * setup a route for a vehicle
      *
      * @param simulation
-     * @param guide         starting Guide
+     * @param guides         starting Guide
      */
-    public Route (Simulation simulation, Guide guide) {
-        guides = new ArrayList<Guide>();
-
-        guides.add(guide);
+    public Route (Simulation simulation, List<Guide> guides) {
+        this.guides = new ArrayList<Guide>(guides);
         current = 0;
     }
 
